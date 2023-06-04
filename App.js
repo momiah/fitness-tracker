@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import StepCounterComponent, { steps } from './components/StepCounter';
 import CalorieTracker from './components/CalorieTracker';
+import WorkoutPlanner from './components/WorkoutPlanner';
 
 const App = () => {
   const [showStepCounter, setShowStepCounter] = useState(false);
   const [showCalorieTracker, setShowCalorieTracker] = useState(false);
+  const [showCalorieBurned, setShowCalorieBurned] = useState(false);
   const [steps, setSteps] = useState(0);
   const [calories, setCalories] = useState(0);
+  const [caloriesBurned, setCaloriesBurned] = useState(0);
 
 
   const handleToggleStepCounter = () => {
@@ -25,6 +28,16 @@ const App = () => {
 
   const handleCalorieChange = (newCalories) => {
     setCalories(newCalories);
+  };
+
+  const handleToggleCalorieBurned = () => {
+    setShowCalorieBurned(!showCalorieBurned);
+    setShowStepCounter(false);
+    setShowCalorieTracker(false);
+  };
+
+  const handleCalorieBurned = (burnedCalories) => {
+    setCaloriesBurned(burnedCalories);
   };
 
   return (
@@ -48,6 +61,15 @@ const App = () => {
         {!showCalorieTracker && <Image source={require('./assets/caloriecounter.jpeg')} style={styles.image} />}
         {showCalorieTracker && <CalorieTracker onCaloriesChange={handleCalorieChange} />}
       </View>
+      {/* Workout Planner */}
+      <View style={[styles.content, showCalorieBurned && styles.activeContent]}>
+        {showCalorieBurned ? <Text style={styles.back} onPress={handleToggleCalorieBurned}>⇐</Text>
+          : <Text style={styles.title} onPress={handleToggleCalorieBurned}>Workout Planner </Text>}
+        {showCalorieBurned ? '' : <Text style={styles.score}>{caloriesBurned}</Text>}
+        {!showCalorieBurned && <Image source={require('./assets/caloriecounter.jpeg')} style={styles.image} />}
+        {showCalorieBurned && <WorkoutPlanner onCaloriesBurned={handleCalorieBurned} />}
+      </View>
+
     </View>
   );
 };
@@ -81,11 +103,11 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 4,
   },
-  
-  
+
+
   activeContent: {
     backgroundColor: 'white',
-    height: '25%',
+    height: '35%',
     justifyContent: 'flex-start',
   },
   title: {
@@ -106,7 +128,7 @@ const styles = StyleSheet.create({
     opacity: 0.2,
     justifyContent: 'center',
     alignItems: 'center',
-   
+
   },
   score: {
     fontWeight: 'bold',
