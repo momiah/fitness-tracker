@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import StepCounterComponent from './components/StepCounter';
+import StepCounterComponent, {steps} from './components/StepCounter';
 import CalorieTracker from './components/CalorieTracker';
 
 const App = () => {
   const [showStepCounter, setShowStepCounter] = useState(false);
   const [showCalorieTracker, setShowCalorieTracker] = useState(false);
+  const [steps, setSteps] = useState(0);
+ 
 
   const handleToggleStepCounter = () => {
     setShowStepCounter(!showStepCounter);
     setShowCalorieTracker(false);
+  };
+  const handleStepsChange = (newSteps) => {
+    setSteps(newSteps);
   };
 
   const handleToggleCalorieTracker = () => {
@@ -25,9 +30,9 @@ const App = () => {
 
       <View style={[styles.content, showStepCounter && styles.activeContent]}>
         <Text style={styles.title} onPress={handleToggleStepCounter}>
-          Steps
+          Steps {steps} 
         </Text>
-        {showStepCounter && <StepCounterComponent />}
+        {showStepCounter && <StepCounterComponent onStepsChange={handleStepsChange}/>}
       </View>
 
       <View style={[styles.content, showCalorieTracker && styles.activeContent]}>

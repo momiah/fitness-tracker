@@ -1,47 +1,50 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const StepCounterComponent = (onStepsChange) => {
-  const [steps, setSteps] = useState(0);
-  const [inputSteps, setInputSteps] = useState('');
-
-  const handleInputChange = (text) => {
-    setInputSteps(text);
-  };
-
-  const handleAddSteps = () => {
-    const parsedSteps = parseInt(inputSteps, 10);
-    if (!isNaN(parsedSteps)) {
-      setSteps(steps + parsedSteps);
+const StepCounterComponent = ({ onStepsChange }) => {
+    const [steps, setSteps] = useState(0);
+    const [inputSteps, setInputSteps] = useState('');
+  
+    const handleInputChange = (text) => {
+      setInputSteps(text);
+    };
+  
+    const handleAddSteps = () => {
+      const parsedSteps = parseInt(inputSteps, 10);
+      if (!isNaN(parsedSteps)) {
+        setSteps(steps + parsedSteps);
+        setInputSteps('');
+        onStepsChange(steps + parsedSteps);
+      } 
+    };
+  
+    const handleResetSteps = () => {
+      setSteps(0);
       setInputSteps('');
-    } 
-  };
-
-  const handleResetSteps = () => {
-    setSteps(0);
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Steps: {steps}</Text>
-      <TextInput
-        style={styles.input}
-        keyboardType="numeric"
-        placeholder="Enter steps"
-        value={inputSteps}
-        onChangeText={handleInputChange}
-      />
-      <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={handleAddSteps}>
-        <Text style={styles.buttonText}>Add Steps</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleResetSteps}>
-        <Text style={styles.buttonText}>Reset</Text>
-      </TouchableOpacity>
+      onStepsChange(0);
+    };
+  
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>Steps: {steps}</Text>
+        <TextInput
+          style={styles.input}
+          keyboardType="numeric"
+          placeholder="Enter steps"
+          value={inputSteps}
+          onChangeText={handleInputChange}
+        />
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleAddSteps}>
+            <Text style={styles.buttonText}>Add Steps</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleResetSteps}>
+            <Text style={styles.buttonText}>Reset</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  };
 
 const styles = StyleSheet.create({
   container: {
@@ -84,3 +87,4 @@ const styles = StyleSheet.create({
 });
 
 export default StepCounterComponent;
+
