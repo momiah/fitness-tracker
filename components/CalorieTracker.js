@@ -1,54 +1,58 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-const CalorieTracker = () => {
-  const [Calories, setCalories] = useState(0);
-  const [inputCalories, setInputCalories] = useState('');
-
-  const handleInputChange = (text) => {
-    setInputCalories(text);
-  };
-
-  const handleAddCalories = () => {
-    const parsedCalories = parseInt(inputCalories, 10);
-    if (!isNaN(parsedCalories)) {
-      setCalories(Calories + parsedCalories);
-      setInputCalories('');
-    } 
-  };
-
-  const handleResetCalories = () => {
-    setCalories(0);
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Calories: {Calories}</Text>
-      <TextInput
-        style={styles.input}
-        keyboardType="numeric"
-        placeholder="Enter Calories"
-        value={inputCalories}
-        onChangeText={handleInputChange}
-      />
-      <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={handleAddCalories}>
-        <Text style={styles.buttonText}>Add Calories</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleResetCalories}>
-        <Text style={styles.buttonText}>Reset</Text>
-      </TouchableOpacity>
+const StepCounterComponent = ({ onStepsChange }) => {
+    const [steps, setSteps] = useState(0);
+    const [inputSteps, setInputSteps] = useState('');
+  
+    const handleInputChange = (text) => {
+      setInputSteps(text);
+    };
+  
+    const handleAddSteps = () => {
+      const parsedSteps = parseInt(inputSteps, 10);
+      if (!isNaN(parsedSteps)) {
+        setSteps(steps + parsedSteps);
+        setInputSteps('');
+        onStepsChange(steps + parsedSteps);
+      } 
+    };
+  
+    const handleResetSteps = () => {
+      setSteps(0);
+      setInputSteps('');
+      onStepsChange(0);
+    };
+  
+    return (
+      <View style={styles.container}>
+        <Image source={require('../assets/running.jpeg')}/>
+        <Text style={styles.text}>Steps: {steps}</Text>
+        <TextInput
+          style={styles.input}
+          keyboardType="numeric"
+          placeholder="Enter steps"
+          value={inputSteps}
+          onChangeText={handleInputChange}
+        />
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleAddSteps}>
+            <Text style={styles.buttonText}>Add Steps</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleResetSteps}>
+            <Text style={styles.buttonText}>Reset</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-
+    maxHeight: 200
   },
   text: {
     fontSize: 20,
@@ -80,7 +84,12 @@ const styles = StyleSheet.create({
   buttonContainer:{
     flexDirection: 'row',
     justifyContent: 'space-evenly'
+  },
+    image:{
+    height: 50,
+    width: 50
   }
 });
 
-export default CalorieTracker;
+export default StepCounterComponent;
+

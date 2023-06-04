@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import StepCounterComponent, {steps} from './components/StepCounter';
+import StepCounterComponent, { steps } from './components/StepCounter';
 import CalorieTracker from './components/CalorieTracker';
 
 const App = () => {
   const [showStepCounter, setShowStepCounter] = useState(false);
   const [showCalorieTracker, setShowCalorieTracker] = useState(false);
   const [steps, setSteps] = useState(0);
- 
+
 
   const handleToggleStepCounter = () => {
     setShowStepCounter(!showStepCounter);
@@ -29,10 +29,11 @@ const App = () => {
       </View>
 
       <View style={[styles.content, showStepCounter && styles.activeContent]}>
-        <Text style={styles.title} onPress={handleToggleStepCounter}>
-          Steps {steps} 
-        </Text>
-        {showStepCounter && <StepCounterComponent onStepsChange={handleStepsChange}/>}
+        {showStepCounter ? <Text style={styles.back} onPress={handleToggleStepCounter}>⇐</Text>
+          : <Text style={styles.title} onPress={handleToggleStepCounter}>Steps </Text>}
+        {showStepCounter ? '' : <Text style={styles.score}>{steps}</Text>}
+        {!showStepCounter && <Image source={require('./assets/running.jpeg')} style={styles.image} />}
+        {showStepCounter && <StepCounterComponent onStepsChange={handleStepsChange} />}
       </View>
 
       <View style={[styles.content, showCalorieTracker && styles.activeContent]}>
@@ -56,11 +57,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontWeight: 'bold',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
   content: {
     marginTop: 20,
     justifyContent: 'center',
@@ -71,6 +67,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 5,
     height: 120,
+    overflow: 'hidden'
   },
   activeContent: {
     backgroundColor: 'white',
@@ -78,11 +75,39 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
+    position: 'absolute',
+    top: '50%',
+    transform: [{ translateY: -10 }],
+    zIndex: 1,
   },
+
+  image: {
+    position: 'absolute',
+    width: 400,
+    height: 400,
+    opacity: 0.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+   
+  },
+  score: {
+    fontWeight: 'bold',
+    marginLeft: 230,
+    fontSize: 80,
+    zIndex: 1
+  },
+  back: {
+    position: 'absolute',
+    top: 0,
+    left: 10,
+    fontSize: 30,
+    fontWeight: 'bold',
+    zIndex: 1,
+  }
 
 });
 

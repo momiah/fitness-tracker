@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 const StepCounterComponent = ({ onStepsChange }) => {
     const [steps, setSteps] = useState(0);
@@ -26,6 +26,7 @@ const StepCounterComponent = ({ onStepsChange }) => {
   
     return (
       <View style={styles.container}>
+        <Image source={require('../assets/running.jpeg')}/>
         <Text style={styles.text}>Steps: {steps}</Text>
         <TextInput
           style={styles.input}
@@ -83,6 +84,10 @@ const styles = StyleSheet.create({
   buttonContainer:{
     flexDirection: 'row',
     justifyContent: 'space-evenly'
+  },
+    image:{
+    height: 50,
+    width: 50
   }
 });
 
