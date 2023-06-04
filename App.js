@@ -1,20 +1,84 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import StepCounterComponent from './components/StepCounter';
+import CalorieTracker from './components/CalorieTracker';
 
-export default function App() {
+const App = () => {
+  const [showStepCounter, setShowStepCounter] = useState(false);
+  const [showCalorieTracker, setShowCalorieTracker] = useState(false);
+
+  const handleToggleStepCounter = () => {
+    setShowStepCounter(!showStepCounter);
+    setShowCalorieTracker(false);
+  };
+
+  const handleToggleCalorieTracker = () => {
+    setShowCalorieTracker(!showCalorieTracker);
+    setShowStepCounter(false);
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <View style={styles.header}>
+        <Text style={styles.header}>Fitness Tracker</Text>
+      </View>
+
+      <View style={[styles.content, showStepCounter && styles.activeContent]}>
+        <Text style={styles.title} onPress={handleToggleStepCounter}>
+          Steps
+        </Text>
+        {showStepCounter && <StepCounterComponent />}
+      </View>
+
+      <View style={[styles.content, showCalorieTracker && styles.activeContent]}>
+        <Text style={styles.title} onPress={handleToggleCalorieTracker}>
+          Calorie Tracker
+        </Text>
+        {showCalorieTracker && <CalorieTracker />}
+      </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
+  header: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 20,
+    alignItems: 'center',
+    fontWeight: 'bold',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  content: {
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'black',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+    height: 120,
+  },
+  activeContent: {
+    backgroundColor: 'white',
+    height: '25%',
+    justifyContent: 'flex-start',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    alignSelf: 'flex-start'
+  },
+
 });
+
+export default App;
