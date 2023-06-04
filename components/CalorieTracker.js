@@ -1,45 +1,45 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-const StepCounterComponent = ({ onStepsChange }) => {
-    const [steps, setSteps] = useState(0);
-    const [inputSteps, setInputSteps] = useState('');
+const CalorieTracker = ({ onCaloriesChange }) => {
+    const [Calories, setCalories] = useState(0);
+    const [inputCalories, setInputCalories] = useState('');
   
     const handleInputChange = (text) => {
-      setInputSteps(text);
+      setInputCalories(text);
     };
   
-    const handleAddSteps = () => {
-      const parsedSteps = parseInt(inputSteps, 10);
-      if (!isNaN(parsedSteps)) {
-        setSteps(steps + parsedSteps);
-        setInputSteps('');
-        onStepsChange(steps + parsedSteps);
+    const handleAddCalories = () => {
+      const parsedCalories = parseInt(inputCalories, 10);
+      if (!isNaN(parsedCalories)) {
+        setCalories(Calories + parsedCalories);
+        setInputCalories('');
+        onCaloriesChange(Calories + parsedCalories);
       } 
     };
   
-    const handleResetSteps = () => {
-      setSteps(0);
-      setInputSteps('');
-      onStepsChange(0);
+    const handleResetCalories = () => {
+      setCalories(0);
+      setInputCalories('');
+      onCaloriesChange(0);
     };
   
     return (
       <View style={styles.container}>
         <Image source={require('../assets/running.jpeg')}/>
-        <Text style={styles.text}>Steps: {steps}</Text>
+        <Text style={styles.text}>Calories: {Calories}</Text>
         <TextInput
           style={styles.input}
           keyboardType="numeric"
-          placeholder="Enter steps"
-          value={inputSteps}
+          placeholder="Enter Calories"
+          value={inputCalories}
           onChangeText={handleInputChange}
         />
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleAddSteps}>
-            <Text style={styles.buttonText}>Add Steps</Text>
+          <TouchableOpacity style={styles.button} onPress={handleAddCalories}>
+            <Text style={styles.buttonText}>Add Calories</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleResetSteps}>
+          <TouchableOpacity style={styles.button} onPress={handleResetCalories}>
             <Text style={styles.buttonText}>Reset</Text>
           </TouchableOpacity>
         </View>
@@ -91,5 +91,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default StepCounterComponent;
+export default CalorieTracker;
 
