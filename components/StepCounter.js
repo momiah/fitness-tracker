@@ -26,7 +26,6 @@ const StepCounterComponent = ({ onStepsChange }) => {
   
     return (
       <View style={styles.container}>
-        <Image source={require('../assets/running.jpeg')}/>
         <Text style={styles.text}>Steps: {steps}</Text>
         <TextInput
           style={styles.input}

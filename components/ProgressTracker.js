@@ -1,74 +1,94 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import StepCounterComponent from './components/StepCounter';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-const App = () => {
-    const [showStepCounter, setShowStepCounter] = useState(false);
-    const [steps, setSteps] = useState(0);
-
-    const handleToggleStepCounter = () => {
-        setShowStepCounter(!showStepCounter);
+const ProgressTracker = ({ onProgressChange }) => {
+    const [progress, setProgress] = useState(0);
+    const [inputProgress, setInputProgress] = useState('');
+  
+    const handleInputChange = (text) => {
+      setInputProgress(text);
     };
-
-    const handleStepsChange = (newSteps) => {
-        setSteps(newSteps);
+  
+    const handleAddProgress = () => {
+      const parsedProgress = parseInt(inputProgress, 10);
+      if (!isNaN(parsedProgress)) {
+        setProgress(progress + parsedProgress);
+        setInputProgress('');
+        onProgressChange(progress + parsedProgress);
+      } 
     };
-
+  
+    const handleResetProgress = () => {
+      setProgresss(0);
+      setInputProgress('');
+      onProgressChange(0);
+    };
+  
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.title}>Fitness Tracker</Text>
-            </View>
-            <View style={styles.content}>
-                <Text style={styles.stepsTitle} onPress={handleToggleStepCounter}>Steps</Text>
-                {showStepCounter && <StepCounterComponent onStepsChange={handleStepsChange} />}
-                <View style={styles.stepsDisplay}>
-                    <Text style={styles.stepsText}>Current Steps: {steps}</Text>
-                </View>
-            </View>
-
+      <View style={styles.container}>
+        <Text style={styles.text}>Calories To Burn: {progress}</Text>
+        <TextInput
+          style={styles.input}
+          keyboardType="numeric"
+          placeholder="Enter Calories To Burn"
+          value={inputProgress}
+          onChangeText={handleInputChange}
+        />
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleAddProgress}>
+            <Text style={styles.buttonText}>Confirm</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleResetProgress}>
+            <Text style={styles.buttonText}>Reset</Text>
+          </TouchableOpacity>
         </View>
+      </View>
     );
-};
+  };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    header: {
-        backgroundColor: '#007AFF',
-        paddingVertical: 20,
-        alignItems: 'center',
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#fff',
-    },
-    content: {
-        marginTop: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'black',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderRadius: 5,
-    },
-    stepsTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    stepsDisplay: {
-        marginTop: 20,
-        alignItems: 'center',
-    },
-    stepsText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    maxHeight: 200
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  input: {
+    width: '80%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  button: {
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 5,
+    margin: 10,
+    width: 130
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  buttonContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
+  },
+    image:{
+    height: 50,
+    width: 50
+  }
 });
 
-export default App;
+export default ProgressTracker;
+

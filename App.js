@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import StepCounterComponent from './components/StepCounter';
 import CalorieTracker from './components/CalorieTracker';
 import WorkoutPlanner from './components/WorkoutPlanner';
+import ProgressTracker from './components/ProgressTracker';
+import GaugeChart from 'react-gauge-chart';
 
 const App = () => {
   const [showStepCounter, setShowStepCounter] = useState(false);
   const [showCalorieTracker, setShowCalorieTracker] = useState(false);
   const [showCalorieBurned, setShowCalorieBurned] = useState(false);
+  const [showProgress, setShowProgress] = useState(false);
   const [steps, setSteps] = useState(0);
   const [calories, setCalories] = useState(0);
   const [caloriesBurned, setCaloriesBurned] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [workoutPlannerData, setWorkoutPlannerData] = useState([]);
 
   const handleToggleStepCounter = () => {
@@ -20,7 +24,7 @@ const App = () => {
   };
 
   const handleStepsChange = (newSteps) => {
-    setSteps(newSteps);
+    setSteps(steps + newSteps);
   };
 
   const handleToggleCalorieTracker = () => {
@@ -30,7 +34,7 @@ const App = () => {
   };
 
   const handleCalorieChange = (newCalories) => {
-    setCalories(newCalories);
+    setCalories(calories + newCalories);
   };
 
   const handleToggleCalorieBurned = () => {
@@ -43,10 +47,46 @@ const App = () => {
     setCaloriesBurned(burnedCalories);
   };
 
+  const handleToggleProgress = () => {
+    setShowProgress(!showProgress);
+    setShowStepCounter(false);
+    setShowCalorieTracker(false);
+  };
+
+  const handleProgress = (progress) => {
+    setProgress(progress);
+  };
+
+  const progressPercent = progress !== 0 ? caloriesBurned / progress : 0;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Fitness Tracker</Text>
+      </View>
+
+      {/* Progress */}
+      <View style={[styles.content, showProgress && styles.activeContent]}>
+        {showProgress ? (
+          <Text style={styles.back} onPress={handleToggleProgress}>
+            ⇐
+          </Text>
+        ) : (
+          <Text style={styles.title} onPress={handleToggleProgress}>
+            Progress Tracker
+          </Text>
+        )}
+        {!showProgress && (
+          <GaugeChart
+            id="gauge-chart4"
+            nrOfLevels={10}
+            arcPadding={0.1}
+            cornerRadius={3}
+            percent={progressPercent}
+            style={styles.chart}
+          />
+        )}
+        {showProgress && <ProgressTracker onProgressChange={handleProgress} />}
       </View>
 
       {/* Step Counter */}
@@ -57,14 +97,10 @@ const App = () => {
           </Text>
         ) : (
           <Text style={styles.title} onPress={handleToggleStepCounter}>
-            Steps
+            Steps Taken
           </Text>
         )}
-        {showStepCounter ? (
-          ''
-        ) : (
-          <Text style={styles.score}>{steps}</Text>
-        )}
+        {!showStepCounter && <Text style={styles.score}>{steps}</Text>}
         {!showStepCounter && (
           <Image
             source={require('./assets/running.jpeg')}
@@ -84,14 +120,10 @@ const App = () => {
           </Text>
         ) : (
           <Text style={styles.title} onPress={handleToggleCalorieTracker}>
-            Calories
+            Calories Consumed
           </Text>
         )}
-        {showCalorieTracker ? (
-          ''
-        ) : (
-          <Text style={styles.score}>{calories}</Text>
-        )}
+        {!showCalorieTracker && <Text style={styles.score}>{calories}</Text>}
         {!showCalorieTracker && (
           <Image
             source={require('./assets/caloriecounter.jpeg')}
@@ -114,9 +146,7 @@ const App = () => {
             Workout Planner
           </Text>
         )}
-        {showCalorieBurned ? (
-          ''
-        ) : (
+        {!showCalorieBurned && (
           <Text style={styles.score}>{caloriesBurned}</Text>
         )}
         {!showCalorieBurned && (
@@ -170,6 +200,7 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowRadius: 4,
+    backgroundColor: '#161616',
   },
   activeContent: {
     backgroundColor: 'white',
@@ -178,7 +209,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    color: 'white',
     marginBottom: 10,
     alignSelf: 'flex-start',
     position: 'absolute',
@@ -197,7 +228,8 @@ const styles = StyleSheet.create({
   score: {
     fontWeight: 'bold',
     marginLeft: 230,
-    fontSize: 80,
+    fontSize: 65,
+    color: 'white',
     zIndex: 1,
   },
   back: {
@@ -207,6 +239,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     zIndex: 1,
+  },
+  chart: {
+    width: '50%',
+    alignSelf: 'flex-end',
   },
 });
 
