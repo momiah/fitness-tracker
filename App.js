@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import StepCounterComponent, { steps } from './components/StepCounter';
+import StepCounterComponent from './components/StepCounter';
 import CalorieTracker from './components/CalorieTracker';
 import WorkoutPlanner from './components/WorkoutPlanner';
 
@@ -11,12 +11,14 @@ const App = () => {
   const [steps, setSteps] = useState(0);
   const [calories, setCalories] = useState(0);
   const [caloriesBurned, setCaloriesBurned] = useState(0);
-
+  const [workoutPlannerData, setWorkoutPlannerData] = useState([]);
 
   const handleToggleStepCounter = () => {
     setShowStepCounter(!showStepCounter);
     setShowCalorieTracker(false);
+    setShowCalorieBurned(false);
   };
+
   const handleStepsChange = (newSteps) => {
     setSteps(newSteps);
   };
@@ -24,6 +26,7 @@ const App = () => {
   const handleToggleCalorieTracker = () => {
     setShowCalorieTracker(!showCalorieTracker);
     setShowStepCounter(false);
+    setShowCalorieBurned(false);
   };
 
   const handleCalorieChange = (newCalories) => {
@@ -43,33 +46,93 @@ const App = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.header}>Fitness Tracker</Text>
-      </View>
-      {/* Step Counter */}
-      <View style={[styles.content, showStepCounter && styles.activeContent]}>
-        {showStepCounter ? <Text style={styles.back} onPress={handleToggleStepCounter}>⇐</Text>
-          : <Text style={styles.title} onPress={handleToggleStepCounter}>Steps </Text>}
-        {showStepCounter ? '' : <Text style={styles.score}>{steps}</Text>}
-        {!showStepCounter && <Image source={require('./assets/running.jpeg')} style={styles.image} />}
-        {showStepCounter && <StepCounterComponent onStepsChange={handleStepsChange} />}
-      </View>
-      {/* Calorie Counter */}
-      <View style={[styles.content, showCalorieTracker && styles.activeContent]}>
-        {showCalorieTracker ? <Text style={styles.back} onPress={handleToggleCalorieTracker}>⇐</Text>
-          : <Text style={styles.title} onPress={handleToggleCalorieTracker}>Calories </Text>}
-        {showCalorieTracker ? '' : <Text style={styles.score}>{calories}</Text>}
-        {!showCalorieTracker && <Image source={require('./assets/caloriecounter.jpeg')} style={styles.image} />}
-        {showCalorieTracker && <CalorieTracker onCaloriesChange={handleCalorieChange} />}
-      </View>
-      {/* Workout Planner */}
-      <View style={[styles.content, showCalorieBurned && styles.activeContent]}>
-        {showCalorieBurned ? <Text style={styles.back} onPress={handleToggleCalorieBurned}>⇐</Text>
-          : <Text style={styles.title} onPress={handleToggleCalorieBurned}>Workout Planner </Text>}
-        {showCalorieBurned ? '' : <Text style={styles.score}>{caloriesBurned}</Text>}
-        {!showCalorieBurned && <Image source={require('./assets/caloriecounter.jpeg')} style={styles.image} />}
-        {showCalorieBurned && <WorkoutPlanner onCaloriesBurned={handleCalorieBurned} />}
+        <Text style={styles.headerText}>Fitness Tracker</Text>
       </View>
 
+      {/* Step Counter */}
+      <View style={[styles.content, showStepCounter && styles.activeContent]}>
+        {showStepCounter ? (
+          <Text style={styles.back} onPress={handleToggleStepCounter}>
+            ⇐
+          </Text>
+        ) : (
+          <Text style={styles.title} onPress={handleToggleStepCounter}>
+            Steps
+          </Text>
+        )}
+        {showStepCounter ? (
+          ''
+        ) : (
+          <Text style={styles.score}>{steps}</Text>
+        )}
+        {!showStepCounter && (
+          <Image
+            source={require('./assets/running.jpeg')}
+            style={styles.image}
+          />
+        )}
+        {showStepCounter && (
+          <StepCounterComponent onStepsChange={handleStepsChange} />
+        )}
+      </View>
+
+      {/* Calorie Tracker */}
+      <View style={[styles.content, showCalorieTracker && styles.activeContent]}>
+        {showCalorieTracker ? (
+          <Text style={styles.back} onPress={handleToggleCalorieTracker}>
+            ⇐
+          </Text>
+        ) : (
+          <Text style={styles.title} onPress={handleToggleCalorieTracker}>
+            Calories
+          </Text>
+        )}
+        {showCalorieTracker ? (
+          ''
+        ) : (
+          <Text style={styles.score}>{calories}</Text>
+        )}
+        {!showCalorieTracker && (
+          <Image
+            source={require('./assets/caloriecounter.jpeg')}
+            style={styles.image}
+          />
+        )}
+        {showCalorieTracker && (
+          <CalorieTracker onCaloriesChange={handleCalorieChange} />
+        )}
+      </View>
+
+      {/* Workout Planner */}
+      <View style={[styles.content, showCalorieBurned && styles.activeContent]}>
+        {showCalorieBurned ? (
+          <Text style={styles.back} onPress={handleToggleCalorieBurned}>
+            ⇐
+          </Text>
+        ) : (
+          <Text style={styles.title} onPress={handleToggleCalorieBurned}>
+            Workout Planner
+          </Text>
+        )}
+        {showCalorieBurned ? (
+          ''
+        ) : (
+          <Text style={styles.score}>{caloriesBurned}</Text>
+        )}
+        {!showCalorieBurned && (
+          <Image
+            source={require('./assets/workoutplan.jpg')}
+            style={styles.image}
+          />
+        )}
+        {showCalorieBurned && (
+          <WorkoutPlanner
+            onCaloriesBurned={handleCalorieBurned}
+            workoutPlannerData={workoutPlannerData}
+            setWorkoutPlannerData={setWorkoutPlannerData}
+          />
+        )}
+      </View>
     </View>
   );
 };
@@ -83,6 +146,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
     paddingVertical: 20,
     alignItems: 'center',
+    fontWeight: 'bold',
+  },
+  headerText: {
+    color: '#fff',
+    fontSize: 20,
     fontWeight: 'bold',
   },
   content: {
@@ -103,8 +171,6 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 4,
   },
-
-
   activeContent: {
     backgroundColor: 'white',
     height: '35%',
@@ -120,7 +186,6 @@ const styles = StyleSheet.create({
     transform: [{ translateY: -10 }],
     zIndex: 1,
   },
-
   image: {
     position: 'absolute',
     width: 400,
@@ -128,13 +193,12 @@ const styles = StyleSheet.create({
     opacity: 0.2,
     justifyContent: 'center',
     alignItems: 'center',
-
   },
   score: {
     fontWeight: 'bold',
     marginLeft: 230,
     fontSize: 80,
-    zIndex: 1
+    zIndex: 1,
   },
   back: {
     position: 'absolute',
@@ -143,8 +207,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     zIndex: 1,
-  }
-
+  },
 });
 
 export default App;
