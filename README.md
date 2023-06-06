@@ -2,22 +2,22 @@
 
 # UI enhancement + Features Added
 
-#Progress Tracker 
+▶ Progress Tracker 
 Displaying 3 metrics:
 - Chart to measure Calories to Burn target against Calories Burned 
 - Dynamic calorie score, displaying 'Calorie Deficit' if Calories Burned is more than consumed or 'Calorie Surplus' if Calories Burned is less than Calories consumed
 - Total Calories burned for the day, taking in calories burned during workout plus total steps taken
 
-#Calories To Burn 
+▶ Calories To Burn 
 Component accepts and displays users input on calories to burn target.
 
-#Calories Consumed
+▶ Calories Consumed
 Component accepts and displays user input on calories consumed
 
-#Step Counter
+▶ Step Counter
 Component that accepts and displays the users inputs on number of steps taken per day. Each steps burns 0.04 Calories and is used to calculate calories burned over total steps and workouts
 
-Workout Planner
+▶ Workout Planner
 Component that gives user a selection of Workouts and displays selected Workouts in a table. Calculate total calories burned and number of hours worked out. 
 
 ####################################################################################################################
