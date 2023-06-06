@@ -71,14 +71,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: 'white'
   },
   selectListContainer: {
     flex: 1,
     width: 350,
+    color: 'white',
+    backgroundColor: 'white',
+    tintColor: 'white'
+    
   },
   listContainer: {
     marginTop: 10,
     width: 350,
+    color: 'white',
+
   },
   listItem: {
     fontSize: 16,
@@ -86,10 +93,12 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     borderColor: '#f0f0f0',
     borderWidth: 1,
+    color: 'white',
   },
   total: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'white'
   },
 });
 

@@ -232,8 +232,8 @@ const styles = StyleSheet.create({
   },
 
   activeContent: {
-    backgroundColor: 'white',
-    height: '35%',
+    backgroundColor: '#161616',
+    height: '30%',
     justifyContent: 'flex-start',
   },
   title: {
@@ -275,6 +275,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     zIndex: 1,
+    color: 'white'
   },
   chart: {
     width: '100%',
