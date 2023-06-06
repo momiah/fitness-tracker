@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import StepCounterComponent from './components/StepCounter';
 import CalorieTracker from './components/CalorieTracker';
 import WorkoutPlanner from './components/WorkoutPlanner';
@@ -100,86 +100,68 @@ const App = () => {
 
 
       {/* Calories To Burn */}
-      <View style={[styles.content, showProgress && styles.activeContent]}>
+      <TouchableOpacity onPress={handleToggleProgress} style={[styles.content, showProgress && styles.activeContent]}>
         {showProgress ? (
           <Text style={styles.back} onPress={handleToggleProgress}>
             ⇐
           </Text>
         ) : (
-          <Text style={styles.title} onPress={handleToggleProgress}>
+          <Text style={styles.title}>
             Calories to Burn
           </Text>
         )}
         {!showStepCounter && <Text style={styles.score}>{progress}</Text>}
         {showProgress && <ProgressTracker onProgressChange={handleProgress} />}
-      </View>
+      </TouchableOpacity>
 
       {/* Calorie Tracker */}
-      <View style={[styles.content, showCalorieTracker && styles.activeContent]}>
+      <TouchableOpacity  onPress={handleToggleCalorieTracker} style={[styles.content, showCalorieTracker && styles.activeContent]}>
         {showCalorieTracker ? (
           <Text style={styles.back} onPress={handleToggleCalorieTracker}>
             ⇐
           </Text>
         ) : (
-          <Text style={styles.title} onPress={handleToggleCalorieTracker}>
+          <Text style={styles.title}>
             Calories Consumed
           </Text>
         )}
         {!showCalorieTracker && <Text style={styles.score}>{calories}</Text>}
-        {/* {!showCalorieTracker && (
-          <Image
-            source={require('./assets/caloriecounter.jpeg')}
-            style={styles.image}
-          />
-        )} */}
         {showCalorieTracker && (
           <CalorieTracker onCaloriesChange={handleCalorieChange} />
         )}
-      </View>
+      </TouchableOpacity>
 
       {/* Step Counter */}
-      <View style={[styles.content, showStepCounter && styles.activeContent]}>
+      <TouchableOpacity  onPress={handleToggleStepCounter} style={[styles.content, showStepCounter && styles.activeContent]}>
         {showStepCounter ? (
           <Text style={styles.back} onPress={handleToggleStepCounter}>
             ⇐
           </Text>
         ) : (
-          <Text style={styles.title} onPress={handleToggleStepCounter}>
+          <Text style={styles.title}>
             Steps Taken
           </Text>
         )}
         {!showStepCounter && <Text style={styles.score}>{steps}</Text>}
-        {/* {!showStepCounter && (
-          <Image
-            source={require('./assets/running.jpeg')}
-            style={styles.image}
-          />
-        )} */}
         {showStepCounter && (
           <StepCounterComponent onStepsChange={handleStepsChange} />
         )}
-      </View>
+      </TouchableOpacity>
 
       {/* Workout Planner */}
-      <View style={[styles.content, showCalorieBurned && styles.activeContent]}>
+      <TouchableOpacity  onPress={handleToggleCalorieBurned} style={[styles.content, showCalorieBurned && styles.activeContent]}>
         {showCalorieBurned ? (
           <Text style={styles.back} onPress={handleToggleCalorieBurned}>
             ⇐
           </Text>
         ) : (
-          <Text style={styles.title} onPress={handleToggleCalorieBurned}>
+          <Text style={styles.title}>
             Workout Planner
           </Text>
         )}
         {!showCalorieBurned && (
           <Text style={styles.score}>{caloriesBurned}</Text>
         )}
-        {/* {!showCalorieBurned && (
-          <Image
-            source={require('./assets/workoutplan.jpg')}
-            style={styles.image}
-          />
-        )} */}
         {showCalorieBurned && (
           <WorkoutPlanner
             onCaloriesBurned={handleCalorieBurned}
@@ -187,7 +169,7 @@ const App = () => {
             setWorkoutPlannerData={setWorkoutPlannerData}
           />
         )}
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
