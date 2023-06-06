@@ -20,7 +20,7 @@ Component that accepts and displays the users inputs on number of steps taken pe
 ▶ Workout Planner
 Component that gives user a selection of Workouts and displays selected Workouts in a table. Calculate total calories burned and number of hours worked out. 
 
-####################################################################################################################
+#############################################################################################################
 
 The task is to review the sample code of the application and you have been tasked with improving the user experience of a mobile app that helps people track their fitness goals. The app has several features, including a step counter, a calorie tracker, and a workout planner.
 Your task is to improve the front-end experience of the app and make it more user-friendly. Here are some specific issues to address:
