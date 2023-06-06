@@ -57,15 +57,49 @@ const App = () => {
     setProgress(progress);
   };
 
-  const progressPercent = progress !== 0 ? caloriesBurned / progress : 0;
+  const caloriesBurnedPerStep = steps * 0.04
+  const totalCaloriesBurned = caloriesBurnedPerStep + caloriesBurned
+  const progressPercent = progress !== 0 ? totalCaloriesBurned / progress : 0;
+  const calorieResult =  calories - totalCaloriesBurned
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Fitness Tracker</Text>
+        <Image source={require('./assets/vivup.png')} style={{ width: 65, height: 45, left: 20, top: 3 }} />
       </View>
 
-      {/* Progress */}
+      {/* Charts */}
+      <View style={[styles.content, { height: 275, flexDirection: 'column' }]}>
+        
+          <View>
+            <GaugeChart
+              id="gauge-chart4"
+              nrOfLevels={10}
+              arcPadding={0.1}
+              cornerRadius={3}
+              percent={progressPercent}
+              style={styles.chart}
+
+            /> <Text style={styles.chartTitle}>Calories to Burn Progress</Text>
+          </View>
+       
+        {/* Metrics */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', }}>
+          <View style={styles.metricContainer}>
+            <Text style={styles.metricText}>{totalCaloriesBurned} Kcal</Text>
+            <Text style={[styles.metricText, {fontSize: 10}]}>Total Calories Burned</Text>
+          </View>
+          <View style={styles.metricContainer}>
+            <Text style={styles.metricText}>{calorieResult} Kcal</Text>
+            <Text style={[styles.metricText, {fontSize: 10}]}>{calorieResult < 0 ? 'Calorie Deficit' : 'Calorie Surplus'}</Text>
+          </View>
+        </View>
+      </View>
+
+
+
+      {/* Calories To Burn */}
       <View style={[styles.content, showProgress && styles.activeContent]}>
         {showProgress ? (
           <Text style={styles.back} onPress={handleToggleProgress}>
@@ -73,43 +107,11 @@ const App = () => {
           </Text>
         ) : (
           <Text style={styles.title} onPress={handleToggleProgress}>
-            Progress Tracker
+            Calories to Burn
           </Text>
         )}
-        {!showProgress && (
-          <GaugeChart
-            id="gauge-chart4"
-            nrOfLevels={10}
-            arcPadding={0.1}
-            cornerRadius={3}
-            percent={progressPercent}
-            style={styles.chart}
-          />
-        )}
+        {!showStepCounter && <Text style={styles.score}>{progress}</Text>}
         {showProgress && <ProgressTracker onProgressChange={handleProgress} />}
-      </View>
-
-      {/* Step Counter */}
-      <View style={[styles.content, showStepCounter && styles.activeContent]}>
-        {showStepCounter ? (
-          <Text style={styles.back} onPress={handleToggleStepCounter}>
-            ⇐
-          </Text>
-        ) : (
-          <Text style={styles.title} onPress={handleToggleStepCounter}>
-            Steps Taken
-          </Text>
-        )}
-        {!showStepCounter && <Text style={styles.score}>{steps}</Text>}
-        {!showStepCounter && (
-          <Image
-            source={require('./assets/running.jpeg')}
-            style={styles.image}
-          />
-        )}
-        {showStepCounter && (
-          <StepCounterComponent onStepsChange={handleStepsChange} />
-        )}
       </View>
 
       {/* Calorie Tracker */}
@@ -124,14 +126,37 @@ const App = () => {
           </Text>
         )}
         {!showCalorieTracker && <Text style={styles.score}>{calories}</Text>}
-        {!showCalorieTracker && (
+        {/* {!showCalorieTracker && (
           <Image
             source={require('./assets/caloriecounter.jpeg')}
             style={styles.image}
           />
-        )}
+        )} */}
         {showCalorieTracker && (
           <CalorieTracker onCaloriesChange={handleCalorieChange} />
+        )}
+      </View>
+
+      {/* Step Counter */}
+      <View style={[styles.content, showStepCounter && styles.activeContent]}>
+        {showStepCounter ? (
+          <Text style={styles.back} onPress={handleToggleStepCounter}>
+            ⇐
+          </Text>
+        ) : (
+          <Text style={styles.title} onPress={handleToggleStepCounter}>
+            Steps Taken
+          </Text>
+        )}
+        {!showStepCounter && <Text style={styles.score}>{steps}</Text>}
+        {/* {!showStepCounter && (
+          <Image
+            source={require('./assets/running.jpeg')}
+            style={styles.image}
+          />
+        )} */}
+        {showStepCounter && (
+          <StepCounterComponent onStepsChange={handleStepsChange} />
         )}
       </View>
 
@@ -149,12 +174,12 @@ const App = () => {
         {!showCalorieBurned && (
           <Text style={styles.score}>{caloriesBurned}</Text>
         )}
-        {!showCalorieBurned && (
+        {/* {!showCalorieBurned && (
           <Image
             source={require('./assets/workoutplan.jpg')}
             style={styles.image}
           />
-        )}
+        )} */}
         {showCalorieBurned && (
           <WorkoutPlanner
             onCaloriesBurned={handleCalorieBurned}
@@ -170,12 +195,15 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
+    padding: 5
   },
   header: {
-    backgroundColor: '#007AFF',
     paddingVertical: 20,
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    flexDirection: 'row',
     fontWeight: 'bold',
   },
   headerText: {
@@ -189,7 +217,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 5,
+    borderRadius: 25,
     height: 120,
     overflow: 'hidden',
     borderColor: '#000',
@@ -202,6 +230,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     backgroundColor: '#161616',
   },
+
   activeContent: {
     backgroundColor: 'white',
     height: '35%',
@@ -216,6 +245,13 @@ const styles = StyleSheet.create({
     top: '50%',
     transform: [{ translateY: -10 }],
     zIndex: 1,
+  },
+  chartTitle: {
+    fontSize: 10,
+    color: 'white',
+    textAlign: 'center',
+    bottom: 15,
+    position: 'relative'
   },
   image: {
     position: 'absolute',
@@ -241,9 +277,15 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   chart: {
-    width: '50%',
-    alignSelf: 'flex-end',
+    width: '100%',
+
   },
+  metricContainer: {
+    backgroundColor: '#00008B', width: 150, height: 100, borderRadius: 10, justifyContent: 'center', alignItems: 'center'
+  },
+  metricText: {
+    fontSize: 20, textAlign: 'center', color: 'white'
+  }
 });
 
 export default App;

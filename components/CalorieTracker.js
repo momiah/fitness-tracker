@@ -27,7 +27,7 @@ const CalorieTracker = ({ onCaloriesChange }) => {
     return (
       <View style={styles.container}>
         <Image source={require('../assets/running.jpeg')}/>
-        <Text style={styles.text}>Calories: {Calories}</Text>
+        <Text style={styles.text}>Calories Consumed: {Calories} Kcal</Text>
         <TextInput
           style={styles.input}
           keyboardType="numeric"

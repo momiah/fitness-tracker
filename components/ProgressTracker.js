@@ -26,7 +26,7 @@ const ProgressTracker = ({ onProgressChange }) => {
   
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Calories To Burn: {progress}</Text>
+        <Text style={styles.text}>Calories To Burn: {progress} Kcal</Text>
         <TextInput
           style={styles.input}
           keyboardType="numeric"
