@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import StepCounterComponent from './components/StepCounter';
 import CalorieTracker from './components/CalorieTracker';
 import WorkoutPlanner from './components/WorkoutPlanner';
 import CaloriesToBurnTracker from './components/CaloriesToBurnTracker';
-import GaugeChart from 'react-gauge-chart';
+import ProgressTracker from './components/ProgressTracker';
 
 const App = () => {
   const [showStepCounter, setShowStepCounter] = useState(false);
@@ -77,40 +77,16 @@ const App = () => {
         <Image source={require('./assets/vivup.png')} style={{ width: 65, height: 45, left: 20, top: 3 }} />
       </View>
 
-      {/* Charts */}
-      <View style={[styles.content, { height: 275, flexDirection: 'column' }]}>
-        <TouchableOpacity  onPress={handleReset} style={styles.resetButton}>RESET</TouchableOpacity>
-        <View>
-          <GaugeChart
-            id="gauge-chart4"
-            nrOfLevels={20}
-            arcPadding={0.1}
-            cornerRadius={3}
-            percent={caloriesToBurnPercent}
-            style={styles.chart}
-            needleColor={'#5BE12C'}
-          /> <Text style={styles.chartTitle}>Calories to Burn caloriesToBurn</Text>
-        </View>
+      <TouchableOpacity  onPress={handleReset} style={styles.resetButton}><>RESET</></TouchableOpacity>
+      <ProgressTracker totalCaloriesBurned={totalCaloriesBurned} calorieResult={calorieResult} caloriesToBurnPercent={caloriesToBurnPercent}/>
 
-        {/* Metrics */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', }}>
-          <View style={styles.metricContainer}>
-            <Text style={styles.metricText}>{totalCaloriesBurned} Kcal</Text>
-            <Text style={[styles.metricText, { fontSize: 10 }]}>Total Calories Burned</Text>
-          </View>
-          <View style={styles.metricContainer}>
-            <Text style={styles.metricText}>{calorieResult} Kcal</Text>
-            <Text style={[styles.metricText, { fontSize: 10 }]}>{calorieResult < 0 ? 'Calorie Deficit' : 'Calorie Surplus'}</Text>
-          </View>
-        </View>
-      </View>
 
       {/* Calories To Burn */}
       {!showcaloriesToBurn &&
         <View style={styles.content}>
           <Text style={styles.score}>{caloriesToBurn}</Text>
-          <TouchableOpacity onPress={handleTogglecaloriesToBurn} style={styles.title}>
-            Calories to Burn
+          <TouchableOpacity onPress={handleTogglecaloriesToBurn} style={styles.titleContainer}>
+            <Text style={styles.title}>Calories to Burn</Text>
           </TouchableOpacity>
         </View>}
       {showcaloriesToBurn && <CaloriesToBurnTracker oncaloriesToBurnChange={handlecaloriesToBurn} handleTogglecaloriesToBurn={handleTogglecaloriesToBurn} />}
@@ -119,8 +95,8 @@ const App = () => {
       {!showCalorieTracker &&
         <View style={styles.content}>
           <Text style={styles.score}>{calories}</Text>
-          <TouchableOpacity onPress={handleToggleCalorieTracker} style={styles.title}>
-            Calories Consumed
+          <TouchableOpacity onPress={handleToggleCalorieTracker} style={styles.titleContainer}>
+           <Text style={styles.title}> Calories Consumed </Text>
           </TouchableOpacity>
         </View>}
       {showCalorieTracker && <CalorieTracker onCaloriesChange={handleCalorieChange} handleToggleCalorieTracker={handleToggleCalorieTracker} />}
@@ -129,8 +105,8 @@ const App = () => {
       {!showStepCounter &&
         <View style={styles.content}>
           <Text style={styles.score}>{steps}</Text>
-          <TouchableOpacity onPress={handleToggleStepCounter} style={styles.title}>
-            Steps Taken
+          <TouchableOpacity onPress={handleToggleStepCounter} style={styles.titleContainer}>
+            <Text style={styles.title}>Steps Taken</Text>
           </TouchableOpacity>
         </View>}
       {showStepCounter && <StepCounterComponent onStepsChange={handleStepsChange} handleToggleStepCounter={handleToggleStepCounter} />}
@@ -139,8 +115,8 @@ const App = () => {
       {!showCalorieBurned &&
         <View style={styles.content}>
           <Text style={styles.score}>{caloriesBurned}</Text>
-          <TouchableOpacity onPress={handleToggleCalorieBurned} style={styles.title}>
-            Workout Planner
+          <TouchableOpacity onPress={handleToggleCalorieBurned} style={styles.titleContainer}>
+            <Text style={styles.title}>Workout Planner</Text>
           </TouchableOpacity>
         </View>}
       {showCalorieBurned && <WorkoutPlanner
@@ -195,23 +171,17 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     backgroundColor: '#161616',
   },
-  title: {
+  title:{
     fontSize: 20,
     fontFamily: 'roboto',
     color: 'white',
+  },
+  titleContainer: {
     marginBottom: 10,
     alignSelf: 'flex-start',
-    position: 'absolute',
-    top: '50%',
-    transform: [{ translateY: -10 }],
-    zIndex: 1,
-  },
-  chartTitle: {
-    fontSize: 10,
-    color: 'white',
-    textAlign: 'center',
-    bottom: 15,
-    position: 'relative'
+   position: 'absolute',
+   top: 50,
+  
   },
   score: {
     fontWeight: 'bold',
@@ -220,26 +190,10 @@ const styles = StyleSheet.create({
     color: 'white',
     zIndex: 1,
   },
-  back: {
-    position: 'absolute',
-    top: 0,
-    left: 10,
-    fontSize: 30,
-    fontWeight: 'bold',
-    zIndex: 1,
-    color: 'white'
-  },
-  chart: {
-    width: '100%',
-  },
-  metricContainer: {
-    backgroundColor: '#00008B', width: 150, height: 100, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10
-  },
-  metricText: {
-    fontSize: 20, textAlign: 'center', color: 'white'
-  },
+
+
   resetButton: {
-    fontFamily: 'roboto', position: 'absolute', backgroundColor: 'red', left: 310, bottom: 230, borderRadius: 3, padding: 5, color: 'white'
+   zIndex: 5, fontFamily: 'roboto', position: 'absolute', backgroundColor: 'red', left: 310, bottom: 750, borderRadius: 3, padding: 5, color: 'white'
   }
 });
 
