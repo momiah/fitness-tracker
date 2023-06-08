@@ -1,229 +1,233 @@
-
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet, Text, View, TextInput,
-  Button,
-  ScrollView,
-  SafeAreaView,
+    StyleSheet,
+    Text,
+    View,
+    TextInput,
+    Button,
+    ScrollView,
+    ActivityIndicator,
+    TouchableOpacity
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { ActivityIndicator } from 'react-native';
 import axios from 'axios';
 
-
-
-
 const RecipeGenerator = () => {
-  const [selected, setSelected] = useState('');
-  const [number] = useState(null);
-  const [protein, setProtein] = useState('');
-  const [carbs, setCarbs] = useState('');
-  const [fat, setFat] = useState('');
-  const [exclude, setExclude] = useState('');
-  const [response, setResponse] = useState('');
-  const [prompt, setPrompt] = useState('');
-  const [loading, setLoading] = useState(false);
-  const apiKey = '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'
-  const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-003/completions'
+    const [selected, setSelected] = useState('');
+    const [protein, setProtein] = useState('');
+    const [carbs, setCarbs] = useState('');
+    const [fat, setFat] = useState('');
+    const [exclude, setExclude] = useState('');
+    const [response, setResponse] = useState('');
+    const [loading, setLoading] = useState(false);
+    const apiKey = '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';
+    const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-003/completions';
 
+    const data = [{ value: 'Breakfast' }, { value: 'Lunch' }, { value: 'Dinner' }];
 
-  const data = [{ value: 'Breakfast' }, { value: 'Lunch' }, { value: 'Dinner' }];
+    const formatDataWithBoldTags = (response) => {
+        let formattedData = response.replace(/Ingredients:/g, '**Ingredients:**');
+        formattedData = formattedData.replace(/Instructions:/g, '**Instructions:**');
+        formattedData = formattedData.replace(/Nutritional Information/g, '**Nutritional Information**');
+        formattedData = formattedData.replace(/Nutritional Value/g, '**Nutritional Information**');
+        formattedData = formattedData.replace(/Nutrition Information/g, '**Nutritional Information**');
+        formattedData = formattedData.replace(/- [\w\d\s.,-]+/g, '**$&**');
+        const formattedTextArray = formattedData.split('**');
 
-  const recipePrompt = (protein, carbs, fat, selected, exclude, prompt) => {
-    console.log(prompt, '💊');
+        return (
+            <Text>
+                {formattedTextArray.map((text, index) => {
+                    if (
+                        text === 'Ingredients:' ||
+                        text === 'Instructions:' ||
+                        text === 'Nutritional Information'
+                    ) {
+                        return (
+                            <Text key={index} style={styles.responseHeaders}>
+                                {text}
+                            </Text>
+                        );
+                    } else {
+                        return <Text key={index}>{text}</Text>;
+                    }
+                })}
+            </Text>
+        );
+    };
 
-    setPrompt(
-      `Give me a ${selected} recipe. It should have the following calorie profile: ${protein} grams of protein, ${carbs} grams of carbohydrates, and ${fat} grams of fat. Please exclude the following ingredients: ${exclude}`,
-    );
-  };
+    const handleGenerator = async () => {
+        const prompt = `Give me the exact ingredients needed for a ${selected} recipe. It should have exactly the following calorie profile: ${protein} grams of protein, ${carbs} grams of carbohydrates, and ${fat} grams of fat. Exclude the following ingredients: ${exclude} and structure this in the following: "name of the recipe", "ingredients", "instructions", "nutritional value`;
 
-  const handleGenerator = async (prompt) => {
+        try {
+            setLoading(true);
+            const response = await axios.post(
+                apiUrl,
+                {
+                    prompt: prompt,
+                    temperature: 0.6,
+                    max_tokens: 2048,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`,
+                    },
+                }
+            );
 
-    function generatePrompt(prompt) {
-        return prompt + 
-        'structure this in the following "name of the recipe", "ingredients", "instructions", "nutritional value"'
+            const responseText = response.data.choices[0].text;
+            setResponse(responseText);
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setLoading(false);
         }
-        
-        const response = await axios.post(apiUrl, {
-            prompt: generatePrompt(prompt),
-            temperature: 0.6,
-            max_tokens: 2048
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            }
-        })
-        const responseText = response.data.choices[0].text
-        setResponse(responseText)
-  }
-
-
-  function formatDataWithBoldTags(response) {
-    let formattedData = response.replace(/Ingredients:/g, '**Ingredients:**');
-    formattedData = formattedData.replace(/Instructions:/g, '**Instructions:**');
-    formattedData = formattedData.replace(/Nutritional Information/g, '**Nutritional Information**');
-    formattedData = formattedData.replace(/Nutritional Value/g, '**Nutritional Information**');
-    formattedData = formattedData.replace(/Nutrition Information/g, '**Nutritional Information**');
-    formattedData = formattedData.replace(/- [\w\d\s.,-]+/g, '**$&**');
-    const formattedTextArray = formattedData.split('**');
+    };
 
     return (
-      <Text>
-        {formattedTextArray.map((text, index) => {
-          if (
-            text === 'Ingredients:' ||
-            text === 'Instructions:' ||
-            text === 'Nutritional Information'
-          ) {
-            return (
-              <Text key={index} style={styles.responseHeaders}>
-                {text}
-              </Text>
-            );
-          } else {
-            return <Text key={index}>{text}</Text>;
-          }
-        })}
-      </Text>
-    );
-  }
-
-
-  return (
- 
-      <ScrollView>
-        <View style={styles.inputContainer}>
-          {/* Protein */}
-          <TextInput
-            style={styles.input}
-            onChangeText={setProtein}
-            value={number}
-            placeholder="Protein"
-            keyboardType="numeric"
-            placeholderTextColor="black"
-          />
-          {/* Carbs */}
-          <TextInput
-            style={styles.input}
-            onChangeText={setCarbs}
-            value={number}
-            placeholder="Carbs"
-            keyboardType="numeric"
-            placeholderTextColor="black"
-          />
-          {/* Fat */}
-          <TextInput
-            style={styles.input}
-            onChangeText={setFat}
-            value={number}
-            placeholder="Fat"
-            keyboardType="numeric"
-            placeholderTextColor="black"
-          />
-          {/* Exclude */}
-          <TextInput
-            style={styles.input}
-            onChangeText={setExclude}
-            value={number}
-            placeholder="Exlude"
-            keyboardType="numeric"
-            placeholderTextColor="black"
-          />
-          {/* Meal Type */}
-          <SelectList
-            setSelected={val => setSelected(val)}
-            data={data}
-            save="save"
-            boxStyles={styles.dropdown}
-            placeholder="Meal Type"
-          />
-        </View>
-        <Button
-          title="Submit"
-          onPress={async () => {
-            setLoading(true);
-            recipePrompt(protein, carbs, fat, selected, exclude, prompt);
-            await handleGenerator(prompt);
-            setLoading(false);
-          }}
-        />
-        {loading && (
-          <Text style={styles.loading}>
-            Ok let's get you a recipe...
-            <ActivityIndicator
-              size="small"
-              color="black"
+        <ScrollView contenContainerStyle={styles.container}>
+            <View style={styles.inputContainer}>
+                {/* Protein */}
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setProtein}
+                    value={protein}
+                    placeholder="Protein"
+                    keyboardType="numeric"
+                    placeholderTextColor="black"
+                />
+                {/* Carbs */}
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setCarbs}
+                    value={carbs}
+                    placeholder="Carbs"
+                    keyboardType="numeric"
+                    placeholderTextColor="black"
+                />
+                {/* Fat */}
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setFat}
+                    value={fat}
+                    placeholder="Fat"
+                    keyboardType="numeric"
+                    placeholderTextColor="black"
+                />
+                {/* Exclude */}
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setExclude}
+                    value={exclude}
+                    placeholder="Exclude"
+                    placeholderTextColor="black"
+                />
+            </View>
+            {/* Meal Type */}
+            <SelectList
+                setSelected={setSelected}
+                data={data}
+                save="save"
+                boxStyles={styles.dropdown}
+                placeholder="Meal Type"
             />
-          </Text>
-        )}
+            <TouchableOpacity style={styles.button}>
+                <Button title="Submit" onPress={handleGenerator} />
+            </TouchableOpacity>
 
-        <ScrollView style={styles.promptContainer}>
-          <Text>
-            Give me a {selected} recipe. It should have the following calorie
-            profile : {protein} grams of protein, {carbs} grams of carbohydrates,
-            and {fat} grams of fat. Please exclude the following ingredients:{' '}
-            {exclude}
-          </Text>
-          {/* Response */}
-          {response ? (
-            <Text>{formatDataWithBoldTags(response)}</Text>
-          ) : (
-            <Text style={styles.placeholderText}>Enter your macros and let's find you a recipe!</Text>
-          )}
+            {loading && (
+                <View style={styles.loadingContainer}>
+                    <Text style={styles.loadingText}>
+                        Ok let's get you a recipe...
+                    </Text>
+                    <ActivityIndicator size="small" color="black" />
+                </View>
+            )}
 
+            <ScrollView style={styles.promptContainer}>
+                <Text>
+                    Give me a {selected} recipe. It should have the following calorie
+                    profile: {protein} grams of protein, {carbs} grams of carbohydrates,
+                    and {fat} grams of fat. Please exclude the following ingredients:{' '}
+                    {exclude}
+                </Text>
+                {/* Response */}
+                {response ? (
+                    <Text>{formatDataWithBoldTags(response)}</Text>
+                ) : (
+                    <Text style={styles.placeholderText}>
+                        Enter your macros and let's find you a recipe!
+                    </Text>
+                )}
+            </ScrollView>
+
+            <View style={styles.buttonContainer}>
+                <Button title="Save Recipe" />
+                <Button title="View Recipes" />
+            </View>
         </ScrollView>
-
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
-          <Button title="Save Receipe"></Button>
-          <Button title="View Recipes"></Button>
-        </View>
-      </ScrollView>
- 
-  );
+    );
 };
 
 const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    width: '100%',
-    borderRadius: 10,
-    marginBottom: 20,
-    borderWidth: 1,
-    padding: 10,
-  },
-  promptContainer: {
-    marginTop: 10,
-    padding: 10,
-    paddingTop: 20,
-    borderWidth: 1,
-    borderColor: '#D3D3D3',
-    height: 430
-  },
-  inputContainer: {
-    padding: 10,
-  },
-  button: {
-    borderRadius: 5,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    color: '#fff',
-  },
-  placeholderText: {
-    fontStyle: 'italic',
-    textAlign: 'center',
-    marginTop: 150,
-    color: '#808080'
-  },
-  responseHeaders: {
-    fontWeight: 'bold'
-  },
-  loading: {
-    fontSize: 15,
-    textAlign: 'center',
-  }
-
+    container: {
+        flexDirection: 'column',
+        justifyContent: 'center'
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        padding: 10,
+        width: '100%',
+    },
+    input: {
+        width: '48%',
+        height: 80,
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 5,
+        marginBottom: 10,
+        paddingHorizontal: 10,
+        fontSize: 16,
+    },
+    dropdown: {
+        marginHorizontal: 10
+    },
+    button: {
+        backgroundColor: '#f0f0f0',
+        width: '100%',
+        justifyContent: 'center',
+        padding: 10
+    },
+    promptContainer: {
+        padding: 10,
+        paddingTop: 20,
+        borderWidth: 1,
+        borderColor: '#D3D3D3',
+        height: 430,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: 20,
+    },
+    responseHeaders: {
+        fontWeight: 'bold',
+    },
+    placeholderText: {
+        fontStyle: 'italic',
+        textAlign: 'center',
+        marginTop: 150,
+        color: '#808080',
+    },
+    loadingContainer: {
+        alignItems: 'center',
+    },
+    loadingText: {
+        fontSize: 15,
+        textAlign: 'center',
+    },
 });
 
 export default RecipeGenerator;
