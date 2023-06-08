@@ -2,6 +2,10 @@
 
 # UI enhancement + Features Added
 
+▶ Recipe Generator *NEW FEATURE*
+Component that takes in user Input for Macro Nutrient target (Protien, Carbs, Fats, Exlcude) and generates the exact ingredients needed for a desired recipe
+-  Displays API response using Axios to send user data to OpenAI API 
+
 ▶ Progress Tracker 
 Displaying 3 metrics:
 - Chart to measure Calories to Burn target against Calories Burned 
