@@ -21,11 +21,11 @@ const WorkoutPlanner = ({ onCaloriesBurned, workoutPlannerData, setWorkoutPlanne
     const calculateTotalCaloriesBurned = (workouts) => {
         let calories = 0;
         workouts.forEach((workout) => {
-            if (workout = 'Running') {
+            if (workout === 'Running 500 Kcal P/h') {
                 calories += 500;
-            } else if (workout = 'Light Jogging') {
+            } else if (workout === 'Light Jogging  300 Kcal P/h') {
                 calories += 300;
-            } else if (workout = 'Sports') {
+            } else if (workout === 'Sports  700 Kcal P/h') {
                 calories += 700;
             }
         });

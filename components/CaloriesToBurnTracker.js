@@ -1,32 +1,32 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const CaloriesToBurnTracker = ({ oncaloriesToBurnChange, handleTogglecaloriesToBurn }) => {
-  const [caloriesToBurn, setcaloriesToBurn] = useState(0);
-  const [inputcaloriesToBurn, setInputcaloriesToBurn] = useState('');
+const CaloriesToBurnTracker = ({ onCaloriesToBurnChange, handleToggleCaloriesToBurn }) => {
+  const [caloriesToBurn, setCaloriesToBurn] = useState(0);
+  const [inputCaloriesToBurn, setInputCaloriesToBurn] = useState('');
 
   const handleInputChange = (text) => {
-    setInputcaloriesToBurn(text);
+    setInputCaloriesToBurn(text);
   };
 
-  const handleAddcaloriesToBurn = () => {
-    const parsedcaloriesToBurn = parseInt(inputcaloriesToBurn, 10);
+  const handleAddCaloriesToBurn = () => {
+    const parsedcaloriesToBurn = parseInt(inputCaloriesToBurn, 10);
     if (!isNaN(parsedcaloriesToBurn)) {
-      setcaloriesToBurn(caloriesToBurn + parsedcaloriesToBurn);
-      setInputcaloriesToBurn('');
-      oncaloriesToBurnChange(caloriesToBurn + parsedcaloriesToBurn);
+      setCaloriesToBurn(caloriesToBurn + parsedcaloriesToBurn);
+      setInputCaloriesToBurn('');
+      onCaloriesToBurnChange(caloriesToBurn + parsedcaloriesToBurn);
     }
   };
 
-  const handleResetcaloriesToBurn = () => {
-    setcaloriesToBurn(0);
-    setInputcaloriesToBurn('');
-    oncaloriesToBurnChange(0);
+  const handleResetCaloriesToBurn = () => {
+    setCaloriesToBurn(0);
+    setInputCaloriesToBurn('');
+    onCaloriesToBurnChange(0);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.back} onPress={handleTogglecaloriesToBurn}>
+      <Text style={styles.back} onPress={handleToggleCaloriesToBurn}>
         ⇐
       </Text>
       <Text style={styles.text}>Calories To Burn</Text>
@@ -37,14 +37,14 @@ const CaloriesToBurnTracker = ({ oncaloriesToBurnChange, handleTogglecaloriesToB
         style={styles.input}
         keyboardType="numeric"
         placeholder="Enter Calories To Burn"
-        value={inputcaloriesToBurn}
+        value={inputCaloriesToBurn}
         onChangeText={handleInputChange}
       />
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleAddcaloriesToBurn}>
+        <TouchableOpacity style={styles.button} onPress={handleAddCaloriesToBurn}>
           <Text style={styles.buttonText}>Confirm</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleResetcaloriesToBurn}>
+        <TouchableOpacity style={styles.button} onPress={handleResetCaloriesToBurn}>
           <Text style={styles.buttonText}>Reset</Text>
         </TouchableOpacity>
       </View>
