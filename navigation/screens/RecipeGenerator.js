@@ -12,7 +12,8 @@ import {
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
-require('dotenv').config();
+import { API_KEY } from '@env'
+
 
 const RecipeGenerator = () => {
     const [selected, setSelected] = useState('');
@@ -22,7 +23,8 @@ const RecipeGenerator = () => {
     const [exclude, setExclude] = useState('');
     const [response, setResponse] = useState('');
     const [loading, setLoading] = useState(false);
-    const apiKey = process.env.API_KEY;
+    dotenv.config();
+    const apiKey = API_KEY;
     const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-003/completions';
 
     const data = [{ value: 'Breakfast' }, { value: 'Lunch' }, { value: 'Dinner' }];
