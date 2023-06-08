@@ -7,7 +7,8 @@ import {
     Button,
     ScrollView,
     ActivityIndicator,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
@@ -86,6 +87,9 @@ const RecipeGenerator = () => {
 
     return (
         <ScrollView contenContainerStyle={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.headerText}>Recipe Generator</Text>
+            </View>
             <View style={styles.inputContainer}>
                 {/* Protein */}
                 <TextInput
@@ -145,18 +149,12 @@ const RecipeGenerator = () => {
             )}
 
             <ScrollView style={styles.promptContainer}>
-                <Text>
-                    Give me a {selected} recipe. It should have the following calorie
-                    profile: {protein} grams of protein, {carbs} grams of carbohydrates,
-                    and {fat} grams of fat. Please exclude the following ingredients:{' '}
-                    {exclude}
-                </Text>
                 {/* Response */}
                 {response ? (
                     <Text>{formatDataWithBoldTags(response)}</Text>
                 ) : (
                     <Text style={styles.placeholderText}>
-                        Enter your macros and let's find you a recipe!
+                        Enter your macros to generate the exact ingredients needed for a recipe!
                     </Text>
                 )}
             </ScrollView>
@@ -173,6 +171,20 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         justifyContent: 'center'
+    },
+    header: {
+        paddingHorizontal: 20,
+        marginVertical: 10,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        fontWeight: 'bold',
+        width: '100%'
+    },
+    headerText: {
+        color: '#161616',
+        fontSize: 20,
+        fontWeight: 'bold',
     },
     inputContainer: {
         flexDirection: 'row',
@@ -192,7 +204,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     dropdown: {
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        marginBottom: 5
     },
     button: {
         backgroundColor: '#f0f0f0',
@@ -205,12 +218,12 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         borderWidth: 1,
         borderColor: '#D3D3D3',
-        height: 430,
+        height: 390,
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: 20,
+        marginTop: 10,
     },
     responseHeaders: {
         fontWeight: 'bold',
@@ -220,6 +233,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 150,
         color: '#808080',
+        fontSize: 20
     },
     loadingContainer: {
         alignItems: 'center',

@@ -29,7 +29,7 @@ const StepCounterComponent = ({ onStepsChange, handleToggleStepCounter }) => {
             <Text style={styles.back} onPress={handleToggleStepCounter} >
                 ⇐
             </Text>
-            <Text style={styles.text}>Steps Taken</Text>
+            <Text style={styles.text}>Steps Taken (0.05 Kcal P/h)</Text>
             <View style={styles.outputContainer}>
                 <Text style={{ fontSize: 100, position: 'relative', left: 30 }}>{steps} </Text>
                 <Text style={{ fontSize: 20, position: 'relative', top: 85 }}>Steps</Text>
