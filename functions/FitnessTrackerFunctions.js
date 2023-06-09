@@ -53,4 +53,8 @@ export function handleToggleStepCounter(showStepCounter, setShowStepCounter, set
     setCaloriesToBurn(0);
     setWorkoutPlannerData([]);
   }
+
+  export function toggleRecipeGen(showRecipeGen, setShowRecipeGen){
+    setShowRecipeGen(!showRecipeGen)
+  }
   

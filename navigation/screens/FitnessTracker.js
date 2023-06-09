@@ -14,8 +14,10 @@ import {
   handleCalorieBurned,
   handleToggleCaloriesToBurn,
   handleCaloriesToBurn,
-  handleReset
+  handleReset,
+  toggleRecipeGen
 } from '../../functions/FitnessTrackerFunctions';
+import RecipeGenerator from './RecipeGenerator';
 
 const FitnessTracker = () => {
   const [showStepCounter, setShowStepCounter] = useState(false);
@@ -27,6 +29,7 @@ const FitnessTracker = () => {
   const [caloriesBurned, setCaloriesBurned] = useState(0);
   const [caloriesToBurn, setCaloriesToBurn] = useState(0);
   const [workoutPlannerData, setWorkoutPlannerData] = useState([]);
+  const [showRecipeGen, setShowRecipeGen] = useState(false);
 
   const caloriesBurnedPerStep = steps * 0.05;
   const totalCaloriesBurned = caloriesBurnedPerStep + caloriesBurned;
@@ -41,10 +44,10 @@ const FitnessTracker = () => {
       </View>
 
       <ProgressTracker totalCaloriesBurned={totalCaloriesBurned} calorieResult={calorieResult} caloriesToBurnPercent={caloriesToBurnPercent} handleReset={() => handleReset(setSteps,
-    setCalories,
-    setCaloriesBurned,
-    setCaloriesToBurn,
-    setWorkoutPlannerData)} />
+        setCalories,
+        setCaloriesBurned,
+        setCaloriesToBurn,
+        setWorkoutPlannerData)} />
 
       {/* Calories To Burn */}
       {!showCaloriesToBurn &&
@@ -55,6 +58,7 @@ const FitnessTracker = () => {
           </TouchableOpacity>
         </View>}
       {showCaloriesToBurn && <CaloriesToBurnTracker onCaloriesToBurnChange={caloriesToBurn => handleCaloriesToBurn(setCaloriesToBurn, caloriesToBurn)} handleToggleCaloriesToBurn={() => handleToggleCaloriesToBurn(showCaloriesToBurn, setShowCaloriesToBurn, setShowStepCounter, setShowCalorieTracker)} />}
+      
 
       {/* Calories Tracker */}
       {!showCalorieTracker &&
@@ -64,7 +68,8 @@ const FitnessTracker = () => {
             <Text style={styles.title}>Calories Consumed</Text>
           </TouchableOpacity>
         </View>}
-      {showCalorieTracker && <CalorieTracker onCaloriesChange={newCalories => handleCalorieChange(calories, setCalories, newCalories)} handleToggleCalorieTracker={() => handleToggleCalorieTracker(showCalorieTracker, setShowCalorieTracker, setShowStepCounter, setShowCalorieBurned)} />}
+      {showCalorieTracker && <CalorieTracker toggleRecipeGen={() => toggleRecipeGen(showRecipeGen, setShowRecipeGen)} onCaloriesChange={newCalories => handleCalorieChange(calories, setCalories, newCalories)} handleToggleCalorieTracker={() => handleToggleCalorieTracker(showCalorieTracker, setShowCalorieTracker, setShowStepCounter, setShowCalorieBurned)} />}
+      {showRecipeGen && <RecipeGenerator />}
 
       {/* Step Counter */}
       {!showStepCounter &&
@@ -104,7 +109,7 @@ const styles = StyleSheet.create({
     padding: 5
   },
   header: {
- paddingHorizontal: 20,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -134,7 +139,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     backgroundColor: '#161616',
   },
-  title:{
+  title: {
     fontSize: 20,
     fontFamily: 'roboto',
     color: 'white',
@@ -142,9 +147,9 @@ const styles = StyleSheet.create({
   titleContainer: {
     marginBottom: 10,
     alignSelf: 'flex-start',
-   position: 'absolute',
-   top: 40,
-  
+    position: 'absolute',
+    top: 40,
+
   },
   score: {
     fontWeight: 'bold',

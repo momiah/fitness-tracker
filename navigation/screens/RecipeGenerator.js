@@ -23,7 +23,6 @@ const RecipeGenerator = () => {
     const [exclude, setExclude] = useState('');
     const [response, setResponse] = useState('');
     const [loading, setLoading] = useState(false);
-    dotenv.config();
     const apiKey = API_KEY;
     const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-003/completions';
 
@@ -89,7 +88,7 @@ const RecipeGenerator = () => {
     };
 
     return (
-        <ScrollView contenContainerStyle={styles.container}>
+        <ScrollView style={styles.scrollView} contenContainerStyle={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>Recipe Generator</Text>
             </View>
@@ -173,7 +172,14 @@ const RecipeGenerator = () => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+    },
+    scrollView: {
+        position: 'absolute',
+        height: 700,
+        width: '100%', // adjust as needed
+        zIndex: 6, 
+        backgroundColor: '#e0e0e0'
     },
     header: {
         paddingHorizontal: 20,

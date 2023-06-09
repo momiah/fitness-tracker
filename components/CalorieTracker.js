@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import RecipeGenerator from '../navigation/screens/RecipeGenerator';
 
-const CalorieTracker = ({ onCaloriesChange, handleToggleCalorieTracker }) => {
+const CalorieTracker = ({ onCaloriesChange, handleToggleCalorieTracker, toggleRecipeGen }) => {
     const [calories, setCalories] = useState(0);
     const [inputCalories, setInputCalories] = useState('');
+
 
     const handleInputChange = (text) => {
         setInputCalories(text);
@@ -29,11 +31,12 @@ const CalorieTracker = ({ onCaloriesChange, handleToggleCalorieTracker }) => {
             <Text style={styles.back} onPress={handleToggleCalorieTracker}>
                 ⇐
             </Text>
+
             <Text style={styles.text}>Calories Consumed</Text>
             <View style={styles.outputContainer}>
                 <Text style={{ fontSize: 100, position: 'relative', left: 30 }}>{calories} <Text style={{ fontSize: 20, position: 'relative', right: 30 }}>Kcal</Text></Text>
             </View>
-           
+
             <TextInput
                 style={styles.input}
                 keyboardType="numeric"
@@ -49,6 +52,9 @@ const CalorieTracker = ({ onCaloriesChange, handleToggleCalorieTracker }) => {
                     <Text style={styles.buttonText}>Reset</Text>
                 </TouchableOpacity>
             </View>
+            <TouchableOpacity style={[styles.button, { width: '85%', marginTop: -10 }]} onPress={handleResetCalories}>
+                <Text style={styles.buttonText} onPress={() => toggleRecipeGen()}>Generate Your Own Recipe!</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -60,12 +66,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 10,
-        height: 300,
+        height: 400,
         width: 350,
         borderRadius: 30,
         backgroundColor: '#e0e0e0',
         zIndex: 3
     },
+
     text: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -73,14 +80,14 @@ const styles = StyleSheet.create({
         color: '#161616'
     },
     input: {
-        width: '80%',
+        width: '85%',
         height: 40,
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,
-        paddingHorizontal: 10,
+        paddingHorizontal: 8,
         position: 'relative',
-
+        top: 10,
         backgroundColor: 'white'
     },
     button: {
@@ -111,7 +118,7 @@ const styles = StyleSheet.create({
     },
     outputContainer: {
         alignItems: 'flex-start',
-        flexDirection: 'row', 
+        flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 15
     }
