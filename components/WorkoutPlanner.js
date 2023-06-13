@@ -15,7 +15,7 @@ const WorkoutPlanner = ({ onCaloriesBurned, workoutPlannerData, setWorkoutPlanne
     const handleWorkoutSelection = (item) => {
         const updatedWorkouts = [...selectedWorkouts, item];
         setSelectedWorkouts(updatedWorkouts);
-        setWorkoutPlannerData(updatedWorkouts); // Update the workoutPlannerData prop
+        setWorkoutPlannerData(updatedWorkouts); 
     };
 
     const calculateTotalCaloriesBurned = (workouts) => {
@@ -36,7 +36,7 @@ const WorkoutPlanner = ({ onCaloriesBurned, workoutPlannerData, setWorkoutPlanne
         const updatedWorkouts = [...selectedWorkouts];
         const removedWorkout = updatedWorkouts.splice(index, 1)[0];
         setSelectedWorkouts(updatedWorkouts);
-        setWorkoutPlannerData(updatedWorkouts); // Update the workoutPlannerData prop
+        setWorkoutPlannerData(updatedWorkouts); 
         const removedCalories = calculateTotalCaloriesBurned([removedWorkout]);
         setTotalCalories((prevTotalCalories) => prevTotalCalories - removedCalories);
     };

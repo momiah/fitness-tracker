@@ -150,7 +150,7 @@ const RecipeGenerator = () => {
                 </View>
             )}
 
-            <ScrollView style={styles.promptContainer}>
+            <ScrollView style={styles.responseContainer}>
                 {/* Response */}
                 {response ? (
                     <Text>{formatDataWithBoldTags(response)}</Text>
@@ -177,9 +177,10 @@ const styles = StyleSheet.create({
     scrollView: {
         position: 'absolute',
         height: 700,
-        width: '100%', // adjust as needed
+        width: '90%', // adjust as needed
         zIndex: 6, 
-        backgroundColor: '#e0e0e0'
+        backgroundColor: '#e0e0e0',
+        borderRadius: 25
     },
     header: {
         paddingHorizontal: 20,
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '48%',
-        height: 80,
+        height: 45,
         borderWidth: 1,
         borderColor: 'black',
         borderRadius: 5,
@@ -217,22 +218,23 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     button: {
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#e0e0e0',
         width: '100%',
         justifyContent: 'center',
         padding: 10
     },
-    promptContainer: {
+    responseContainer: {
         padding: 10,
         paddingTop: 20,
         borderWidth: 1,
         borderColor: '#D3D3D3',
-        height: 390,
+        height: 370,
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: 10,
+      
     },
     responseHeaders: {
         fontWeight: 'bold',
@@ -242,7 +244,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 150,
         color: '#808080',
-        fontSize: 20
+        fontSize: 15
     },
     loadingContainer: {
         alignItems: 'center',

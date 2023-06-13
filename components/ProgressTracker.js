@@ -18,7 +18,7 @@ const ProgressTracker = ({totalCaloriesBurned, calorieResult, caloriesToBurnPerc
                         style={styles.chart}
                         needleColor={'#5BE12C'}
                     /> <Text style={styles.chartTitle}>Calories to Burn Progress</Text>
-                </View>
+                </View> 
 
                 {/* Metrics */}
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', }}>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     },
     resetButton: {
       zIndex: 5, 
-      fontFamily: 'roboto', 
+      //fontFamily: 'roboto', 
       position: 'absolute', 
       backgroundColor: 'red', 
       left: 315, 

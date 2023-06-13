@@ -43,7 +43,8 @@ const FitnessTracker = () => {
         <Image source={require('../../assets/vivup.png')} style={{ width: 65, height: 45, left: 20, top: 3 }} />
       </View>
 
-      <ProgressTracker totalCaloriesBurned={totalCaloriesBurned} calorieResult={calorieResult} caloriesToBurnPercent={caloriesToBurnPercent} handleReset={() => handleReset(setSteps,
+      <ProgressTracker totalCaloriesBurned={totalCaloriesBurned} calorieResult={calorieResult} caloriesToBurnPercent={caloriesToBurnPercent} handleReset={() => handleReset(
+        setSteps,
         setCalories,
         setCaloriesBurned,
         setCaloriesToBurn,
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: 'roboto',
+    // fontFamily: 'roboto',
     color: 'white',
   },
   titleContainer: {

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import RecipeGenerator from '../navigation/screens/RecipeGenerator';
 
 const CalorieTracker = ({ onCaloriesChange, handleToggleCalorieTracker, toggleRecipeGen }) => {
     const [calories, setCalories] = useState(0);
@@ -125,4 +124,3 @@ const styles = StyleSheet.create({
 });
 
 export default CalorieTracker;
-
