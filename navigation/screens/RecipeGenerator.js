@@ -13,9 +13,10 @@ import {
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
 import { API_KEY } from '@env'
+import { toggleRecipeGen } from '../../functions/FitnessTrackerFunctions';
 
 
-const RecipeGenerator = () => {
+const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
     const [selected, setSelected] = useState('');
     const [protein, setProtein] = useState('');
     const [carbs, setCarbs] = useState('');
@@ -58,9 +59,19 @@ const RecipeGenerator = () => {
         );
     };
 
-    const handleGenerator = async () => {
-        const prompt = `Give me the exact ingredients needed for a ${selected} recipe. It should have exactly the following calorie profile: ${protein} grams of protein, ${carbs} grams of carbohydrates, and ${fat} grams of fat. Exclude the following ingredients: ${exclude} and structure this in the following: "name of the recipe", "ingredients", "instructions", "nutritional value`;
+    const extractCalories = (response) => {
+        const caloriesMatch = response.match(/Calories:\s*(\d+)/i);
+        let calories = null;
+        if (caloriesMatch) {
+            calories = parseInt(caloriesMatch[1], 10);
+        }
+        setCalories(calories)
+        return calories;
+    };
 
+
+    const handleGenerator = async () => {
+        const prompt = `Give me the exact ingredients needed for a ${selected} recipe. It should have exactly the following calorie profile: ${protein} grams of protein, ${carbs} grams of carbohydrates, and ${fat} grams of fat. Exclude the following ingredients: ${exclude} and structure this in the following: "name of the recipe", "ingredients", "instructions", "nutritional value for Calories, Protien, Carbs, Fats"`;
         try {
             setLoading(true);
             const response = await axios.post(
@@ -80,6 +91,8 @@ const RecipeGenerator = () => {
 
             const responseText = response.data.choices[0].text;
             setResponse(responseText);
+            const calories = extractCalories(responseText)
+            console.log(calories)
         } catch (error) {
             console.error('Error:', error);
         } finally {
@@ -90,6 +103,7 @@ const RecipeGenerator = () => {
     return (
         <ScrollView style={styles.scrollView} contenContainerStyle={styles.container}>
             <View style={styles.header}>
+                <Text style={styles.back} onPress={() => toggleRecipeGen()}>⇐</Text>
                 <Text style={styles.headerText}>Recipe Generator</Text>
             </View>
             <View style={styles.inputContainer}>
@@ -163,7 +177,7 @@ const RecipeGenerator = () => {
 
             <View style={styles.buttonContainer}>
                 <Button title="Save Recipe" />
-                <Button title="View Recipes" />
+                <Button title="Add Recipe" onPress={() => extractCalories(response)} />
             </View>
         </ScrollView>
     );
@@ -178,7 +192,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         height: 700,
         width: '90%', // adjust as needed
-        zIndex: 6, 
+        zIndex: 6,
         backgroundColor: '#e0e0e0',
         borderRadius: 25
     },
@@ -187,7 +201,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
-        flexDirection: 'row',
+        flexDirection: 'column',
         fontWeight: 'bold',
         width: '100%'
     },
@@ -234,7 +248,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: 10,
-      
+
     },
     responseHeaders: {
         fontWeight: 'bold',
@@ -252,6 +266,15 @@ const styles = StyleSheet.create({
     loadingText: {
         fontSize: 15,
         textAlign: 'center',
+    },
+    back: {
+        position: 'absolute',
+        top: 2,
+        left: 10,
+        fontSize: 30,
+        fontWeight: 'bold',
+        zIndex: 1,
+        color: '#161616'
     },
 });
 

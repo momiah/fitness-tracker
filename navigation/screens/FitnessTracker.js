@@ -69,8 +69,8 @@ const FitnessTracker = () => {
             <Text style={styles.title}>Calories Consumed</Text>
           </TouchableOpacity>
         </View>}
-      {showCalorieTracker && <CalorieTracker toggleRecipeGen={() => toggleRecipeGen(showRecipeGen, setShowRecipeGen)} onCaloriesChange={newCalories => handleCalorieChange(calories, setCalories, newCalories)} handleToggleCalorieTracker={() => handleToggleCalorieTracker(showCalorieTracker, setShowCalorieTracker, setShowStepCounter, setShowCalorieBurned)} />}
-      {showRecipeGen && <RecipeGenerator />}
+      {showCalorieTracker && <CalorieTracker calories={calories} setCalories={setCalories} toggleRecipeGen={() => toggleRecipeGen(showRecipeGen, setShowRecipeGen)} onCaloriesChange={newCalories => handleCalorieChange(calories, setCalories, newCalories)} handleToggleCalorieTracker={() => handleToggleCalorieTracker(showCalorieTracker, setShowCalorieTracker, setShowStepCounter, setShowCalorieBurned)} />}
+      {showRecipeGen && <RecipeGenerator setCalories={setCalories} toggleRecipeGen={() => toggleRecipeGen(showRecipeGen, setShowRecipeGen)}/>}
 
       {/* Step Counter */}
       {!showStepCounter &&
