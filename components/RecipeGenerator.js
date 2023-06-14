@@ -11,6 +11,8 @@ import {
 import Alert from "react-native-awesome-alerts";
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
+import { setDoc, doc, collection } from 'firebase/firestore';
+import { db } from '../services/firebase.config';
 import { API_KEY } from '@env'
 
 const RecipeGenerator = ({ setCalories, toggleRecipeGen, calories }) => {
@@ -96,11 +98,42 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen, calories }) => {
             );
             const responseText = response.data.choices[0].text;
             setResponse(responseText);
+            console.log(responseText)
         } catch (error) {
             console.error('Error:', error);
         } finally {
             setLoading(false);
         }
+    };
+    
+    const saveRecipe = async (response) => {
+      try {
+        const recipeCollectionRef = collection(db, 'recipes');
+    
+        const ingredientsIndex = response.indexOf('Ingredients');
+        if (ingredientsIndex === -1) {
+          console.error('Invalid response format. Unable to find ingredients.');
+          return;
+        }
+    
+        const recipeName = response.substring(0, ingredientsIndex).trim();
+        const description = response.substring(ingredientsIndex + 'Ingredients'.length).trim();
+    
+        if (description) {
+          const recipeData = {
+            name: recipeName,
+            description: description,
+          };
+    
+          const recipeDocRef = doc(recipeCollectionRef, recipeName);
+          await setDoc(recipeDocRef, recipeData);
+          console.log('Recipe saved successfully!');
+        } else {
+          console.error('Invalid response format. Unable to extract recipe description.');
+        }
+      } catch (error) {
+        console.error('Error saving recipe:', error);
+      }
     };
 
     return (
@@ -180,7 +213,7 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen, calories }) => {
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Save Recipe</Text>
+                    <Text style={styles.buttonText} onPress={() => saveRecipe(response)}>Save Recipe</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => extractCalories(response)}>
                     <Text style={styles.buttonText}>Add Calories</Text>
