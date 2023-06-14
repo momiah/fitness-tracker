@@ -4,12 +4,11 @@ import {
     Text,
     View,
     TextInput,
-    Button,
     ScrollView,
     ActivityIndicator,
     TouchableOpacity,
-    Image
 } from 'react-native';
+import Alert from "react-native-awesome-alerts";
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
 import { API_KEY } from '@env'
@@ -22,6 +21,8 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
     const [exclude, setExclude] = useState('');
     const [response, setResponse] = useState('');
     const [loading, setLoading] = useState(false);
+    const [alert, setAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('')
     const apiKey = API_KEY;
     const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-003/completions';
 
@@ -58,17 +59,25 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
     };
 
     const extractCalories = (response) => {
-        const caloriesMatch = response.match(/Calories:\s*(\d+)/i);
         let calories = null;
-        if (caloriesMatch) {
+        if (!response) {
+          setAlertMessage('You Must Generate a recipe first!');
+        } else {
+          const caloriesMatch = response.match(/Calories:\s*(\d+)/i);
+    
+          if (caloriesMatch) {
             calories = parseInt(caloriesMatch[1], 10);
+          }
+          setCalories(calories);
+          setAlertMessage('Recipe Added');
         }
-        setCalories(calories)
+    
+        setAlert(true);
         return calories;
-    };
-
+      };
 
     const handleGenerator = async () => {
+        setAlert(false);
         const prompt = `Give me the exact ingredients needed for a ${selected} recipe. It should have exactly the following calorie profile: ${protein} grams of protein, ${carbs} grams of carbohydrates, and ${fat} grams of fat. Exclude the following ingredients: ${exclude} and structure this in the following: "name of the recipe", "ingredients", "instructions", "nutritional value for Calories, Protien, Carbs, Fats"`;
         try {
             setLoading(true);
@@ -78,15 +87,13 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
                     prompt: prompt,
                     temperature: 0.6,
                     max_tokens: 2048,
+                }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`,
                 },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`,
-                    },
-                }
+            }
             );
-
             const responseText = response.data.choices[0].text;
             setResponse(responseText);
         } catch (error) {
@@ -179,6 +186,12 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
                     <Text style={styles.buttonText}>Add Calories</Text>
                 </TouchableOpacity>
             </View>
+            <Alert
+                show={alert}
+                message={alertMessage}
+                closeOnTouchOutside={true}
+               
+            />
         </ScrollView>
     );
 };
@@ -256,8 +269,8 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: 5,
-        marginBottom: 10
+
+
     },
     responseHeaders: {
         fontWeight: 'bold',
