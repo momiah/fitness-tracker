@@ -97,7 +97,7 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
     };
 
     return (
-        <ScrollView style={styles.scrollView} contenContainerStyle={styles.container}>
+        <ScrollView style={styles.container} contenContainerStyle={styles.scrollView}>
             <View style={styles.header}>
                 <Text style={styles.back} onPress={() => toggleRecipeGen()}>⇐</Text>
                 <Text style={styles.headerText}>Recipe Generator</Text>
@@ -147,8 +147,8 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
                 boxStyles={styles.dropdown}
                 placeholder="Meal Type"
             />
-            <TouchableOpacity style={styles.button}>
-                <Button title="Submit" onPress={handleGenerator} />
+            <TouchableOpacity style={styles.button} onPress={handleGenerator}>
+                <Text style={styles.buttonText}>GENERATE!</Text>
             </TouchableOpacity>
 
             {loading && (
@@ -172,26 +172,31 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
             </ScrollView>
 
             <View style={styles.buttonContainer}>
-                <Button title="Save Recipe" />
-                <Button title="Add Calories" onPress={() => extractCalories(response)} />
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Save Recipe</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => extractCalories(response)}>
+                    <Text style={styles.buttonText}>Add Calories</Text>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    scrollView: {
         flexDirection: 'column',
         justifyContent: 'center',
+
     },
-    scrollView: {
+    container: {
         position: 'absolute',
         height: 700,
-        width: '90%', 
+        width: '90%',
         zIndex: 6,
         backgroundColor: '#e0e0e0',
         borderRadius: 25,
-       
+
     },
     header: {
         paddingHorizontal: 20,
@@ -229,23 +234,30 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     button: {
-        backgroundColor: '#e0e0e0',
-        width: '100%',
-        justifyContent: 'center',
-        padding: 10
+        backgroundColor: '#00008B',
+        padding: 10,
+        borderRadius: 5,
+        margin: 10,
+
+    },
+    buttonText: {
+        color: '#e0e0e0',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
     responseContainer: {
         padding: 10,
         paddingTop: 20,
         borderWidth: 1,
         borderColor: '#D3D3D3',
-        height: 370,
+        height: 355,
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: 10,
-
+        marginTop: 5,
+        marginBottom: 10
     },
     responseHeaders: {
         fontWeight: 'bold',
@@ -260,7 +272,7 @@ const styles = StyleSheet.create({
     loadingContainer: {
         position: 'absolute',
         alignItems: 'center',
-        top: 300, 
+        top: 300,
         left: 90
     },
     loadingText: {

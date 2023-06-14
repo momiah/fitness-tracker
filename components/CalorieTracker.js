@@ -27,13 +27,10 @@ const CalorieTracker = ({ onCaloriesChange, handleToggleCalorieTracker, toggleRe
 
     return (
         <View style={styles.container}>
-            <Text style={styles.back} onPress={handleToggleCalorieTracker}>
-                ⇐
-            </Text>
-
+            <Text style={styles.back} onPress={handleToggleCalorieTracker}>⇐</Text>
             <Text style={styles.text}>Calories Consumed</Text>
             <View style={styles.outputContainer}>
-                <Text style={{ fontSize: 100, position: 'relative', left: 30 }}>{calories} <Text style={{ fontSize: 20, position: 'relative', right: 30 }}>Kcal</Text></Text>
+                <Text style={{ fontSize: 100, position: 'relative', left: 30 }}>{calories} <Text style={{ fontSize: 20, position: 'relative', right: 30 }}> Kcal</Text></Text>
             </View>
 
             <TextInput
