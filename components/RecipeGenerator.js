@@ -13,7 +13,7 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
 import { API_KEY } from '@env'
 
-const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
+const RecipeGenerator = ({ setCalories, toggleRecipeGen, calories }) => {
     const [selected, setSelected] = useState('');
     const [protein, setProtein] = useState('');
     const [carbs, setCarbs] = useState('');
@@ -59,17 +59,17 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
     };
 
     const extractCalories = (response) => {
-        let calories = null;
+        let calorie = null;
         if (!response) {
           setAlertMessage('You Must Generate a recipe first!');
         } else {
           const caloriesMatch = response.match(/Calories:\s*(\d+)/i);
     
           if (caloriesMatch) {
-            calories = parseInt(caloriesMatch[1], 10);
+            calorie = parseInt(caloriesMatch[1], 10);
           }
-          setCalories(calories);
-          setAlertMessage('Recipe Added');
+          setCalories(calorie + calories);
+          setAlertMessage('Calories Added');
         }
     
         setAlert(true);
