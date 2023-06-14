@@ -13,8 +13,6 @@ import {
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
 import { API_KEY } from '@env'
-import { toggleRecipeGen } from '../../functions/FitnessTrackerFunctions';
-
 
 const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
     const [selected, setSelected] = useState('');
@@ -91,8 +89,6 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
 
             const responseText = response.data.choices[0].text;
             setResponse(responseText);
-            const calories = extractCalories(responseText)
-            console.log(calories)
         } catch (error) {
             console.error('Error:', error);
         } finally {
@@ -177,7 +173,7 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen }) => {
 
             <View style={styles.buttonContainer}>
                 <Button title="Save Recipe" />
-                <Button title="Add Recipe" onPress={() => extractCalories(response)} />
+                <Button title="Add Calories" onPress={() => extractCalories(response)} />
             </View>
         </ScrollView>
     );
@@ -191,10 +187,11 @@ const styles = StyleSheet.create({
     scrollView: {
         position: 'absolute',
         height: 700,
-        width: '90%', // adjust as needed
+        width: '90%', 
         zIndex: 6,
         backgroundColor: '#e0e0e0',
-        borderRadius: 25
+        borderRadius: 25,
+       
     },
     header: {
         paddingHorizontal: 20,
@@ -261,11 +258,15 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     loadingContainer: {
+        position: 'absolute',
         alignItems: 'center',
+        top: 300, 
+        left: 90
     },
     loadingText: {
         fontSize: 15,
         textAlign: 'center',
+        marginBottom: 10
     },
     back: {
         position: 'absolute',

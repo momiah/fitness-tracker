@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const CalorieTracker = ({ onCaloriesChange, handleToggleCalorieTracker, toggleRecipeGen, calories, setCalories }) => {
+const CalorieTracker = ({ onCaloriesChange, handleToggleCalorieTracker, toggleRecipeGen }) => {
+    const [calories, setCalories] = useState(0);
     const [inputCalories, setInputCalories] = useState('');
 
 
