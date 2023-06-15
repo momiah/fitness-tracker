@@ -118,11 +118,14 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen, calories }) => {
     
         const recipeName = response.substring(0, ingredientsIndex).trim();
         const description = response.substring(ingredientsIndex + 'Ingredients'.length).trim();
+        const calories = response.match(/Calories:\s*(\d+)/i)?.[1];
+        console.log(calories)
     
         if (description) {
           const recipeData = {
             name: recipeName,
             description: description,
+            calories: calories
           };
     
           const recipeDocRef = doc(recipeCollectionRef, recipeName);
@@ -241,7 +244,7 @@ const styles = StyleSheet.create({
         width: '90%',
         zIndex: 6,
         backgroundColor: '#e0e0e0',
-        borderRadius: 25,
+        borderRadius: 20,
 
     },
     header: {
