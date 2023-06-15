@@ -63,7 +63,7 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen, calories }) => {
     const extractCalories = (response) => {
         let calorie = null;
         if (!response) {
-          setAlertMessage('You Must Generate a recipe first!');
+          setAlertMessage('You must generate a recipe first!');
         } else {
           const caloriesMatch = response.match(/Calories:\s*(\d+)/i);
     
@@ -74,7 +74,7 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen, calories }) => {
           setAlertMessage('Calories Added');
         }
     
-        setAlert(true);
+        setAlert(!alert);
         return calories;
       };
 
@@ -107,36 +107,43 @@ const RecipeGenerator = ({ setCalories, toggleRecipeGen, calories }) => {
     };
     
     const saveRecipe = async (response) => {
-      try {
-        const recipeCollectionRef = collection(db, 'recipes');
-    
-        const ingredientsIndex = response.indexOf('Ingredients');
-        if (ingredientsIndex === -1) {
-          console.error('Invalid response format. Unable to find ingredients.');
-          return;
-        }
-    
-        const recipeName = response.substring(0, ingredientsIndex).trim();
-        const description = response.substring(ingredientsIndex + 'Ingredients'.length).trim();
-        const calories = response.match(/Calories:\s*(\d+)/i)?.[1];
-        console.log(calories)
-    
-        if (description) {
-          const recipeData = {
-            name: recipeName,
-            description: description,
-            calories: calories
-          };
-    
-          const recipeDocRef = doc(recipeCollectionRef, recipeName);
-          await setDoc(recipeDocRef, recipeData);
-          console.log('Recipe saved successfully!');
+
+        if(!response){
+            setAlertMessage('You must generate a recipe first!');
         } else {
-          console.error('Invalid response format. Unable to extract recipe description.');
+            try {
+                const recipeCollectionRef = collection(db, 'recipes');
+            
+                const ingredientsIndex = response.indexOf('Ingredients');
+                if (ingredientsIndex === -1) {
+                  console.error('Invalid response format. Unable to find ingredients.');
+                  return;
+                }
+            
+                const recipeName = response.substring(0, ingredientsIndex).trim();
+                const description = response.substring(ingredientsIndex + 'Ingredients'.length).trim();
+                const calories = response.match(/Calories:\s*(\d+)/i)?.[1];
+            
+                if (description) {
+                  const recipeData = {
+                    name: recipeName,
+                    description: description,
+                    calories: calories
+                  };
+            
+                  const recipeDocRef = doc(recipeCollectionRef, recipeName);
+                  await setDoc(recipeDocRef, recipeData);
+                  setAlertMessage('Recipe Saved!');
+                  console.log('Recipe saved successfully!');
+                } else {
+                  console.error('Invalid response format. Unable to extract recipe description.');
+                }
+              } catch (error) {
+                console.error('Error saving recipe:', error);
+              }
         }
-      } catch (error) {
-        console.error('Error saving recipe:', error);
-      }
+        setAlert(!alert)
+
     };
 
     return (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Button, ScrollView, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../services/firebase.config";
 
 const SavedRecipes = () => {
@@ -32,9 +32,20 @@ const SavedRecipes = () => {
       setActive(!active);
     };
 
-    const handleDelete = () =>{
-
-    }
+    const handleDelete = async () => {
+      try {   
+        const recipeRef = doc(db, 'recipes', recipe.id);
+    
+        await deleteDoc(recipeRef);
+        setSavedRecipes((prevRecipes) =>
+        prevRecipes.filter((prevRecipe) => prevRecipe.id !== recipe.id)
+      );
+        console.log('Recipe deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting recipe:', error);
+        
+      }
+    };
 
     const handleExport = () => {
 
@@ -70,18 +81,23 @@ const SavedRecipes = () => {
               justifyContent: "space-around",
             }}
           >
-            <MaterialCommunityIcons
-              name="delete"
-              size={20}
-              color="red"
-              onPress={handleDelete}
-            />
-            <MaterialCommunityIcons
-              name="export"
-              size={20}
-              color="green"
-              onPress={handleExport}
-            />
+            <TouchableOpacity>
+              <MaterialCommunityIcons
+                name="delete"
+                size={20}
+                color="red"
+                onPress={handleDelete}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <MaterialCommunityIcons
+                name="export"
+                size={20}
+                color="green"
+                onPress={handleExport}
+              />
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -160,6 +176,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: 'white',
     zIndex: 1,
+    marginLeft: 25
   },
   recipeContent: {
     backgroundColor: "#f2f2f2",
@@ -172,31 +189,4 @@ const styles = StyleSheet.create({
 
 export default SavedRecipes;
 
-//   const [savedRecipes, setSavedRecipes] = useState([
-//     {
-//       recipeName: 'Egg and Cheese Breakfast Burrito',
-//       recipe: `
-//         Recipe Name: Egg and Cheese Breakfast Burrito
 
-//         Ingredients:
-//         2 large eggs
-//         2 tablespoons of shredded cheese
-//         1 tablespoon of butter
-//         1 tortilla
-
-//         Instructions:
-//         1. Heat a skillet over medium heat.
-//         2. Melt the butter in the skillet.
-//         3. Crack the eggs into the skillet and scramble until cooked through.
-//         4. Place the scrambled eggs on the tortilla and top with cheese.
-//         5. Roll up the tortilla and secure with a toothpick.
-//         6. Serve and enjoy!
-
-//         Nutritional Value: (Per Burrito)
-//         Calories: 300
-//         Protein: 30g
-//         Carbs: 30g
-//         Fats: 30g
-//       `,
-//     },
-//   ]);
