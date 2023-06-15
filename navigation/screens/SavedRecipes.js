@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button, ScrollView, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Touchable } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
+import { handleExport } from "../../functions/SavedRecipeFunctions";
 import { db } from "../../services/firebase.config";
 
 const SavedRecipes = () => {
@@ -29,6 +30,7 @@ const SavedRecipes = () => {
     const [active, setActive] = useState(false);
 
     const handlePress = () => {
+      console.log(recipe)
       setActive(!active);
     };
 
@@ -43,18 +45,12 @@ const SavedRecipes = () => {
         console.log('Recipe deleted successfully!');
       } catch (error) {
         console.error('Error deleting recipe:', error);
-        
       }
     };
 
-    const handleExport = () => {
-
-    }
-  
-    const containerHeight = active ? "auto" : 100;
 
     return (
-      <View style={[styles.recipeContainer, { height: containerHeight }]}>
+      <View style={[styles.recipeContainer, { height: active ? "auto" : 100 }]}>
         <View
           style={{
             flexDirection: "row",
@@ -63,20 +59,32 @@ const SavedRecipes = () => {
             width: "100%",
           }}
         >
-          <Text
-            style={[styles.recipeName, { marginTop: active ? 20 : 5 }]}
-            onPress={handlePress}
+          <TouchableOpacity
+          onPress={handlePress}
+            style={[
+              styles.recipeName,
+              {
+                marginTop: active ? 20 : 5,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                right: 20,
+              },
+            ]}
           >
-            {recipe.name}
-          </Text>
-          <Text style={styles.score}>
-            {recipe.calories}
-            <Text style={{ fontSize: 10 }}>Kcal</Text>
-          </Text>
+            <Text style={{ color: "white", width: '50%' }} >
+              {recipe.name}
+            </Text>
+
+            <Text style={styles.score}>
+              {recipe.calories}
+              <Text style={{ fontSize: 10 }}>Kcal</Text>
+            </Text>
+          </TouchableOpacity>
           <View
             style={{
               flexDirection: "column",
-              left: 20,
               height: 70,
               justifyContent: "space-around",
             }}
@@ -95,7 +103,7 @@ const SavedRecipes = () => {
                 name="export"
                 size={20}
                 color="green"
-                onPress={handleExport}
+                onPress={handleExport(recipe)}
               />
             </TouchableOpacity>
           </View>
@@ -114,9 +122,16 @@ const SavedRecipes = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.heading}>Saved Recipes</Text>
-        <Button title="Refresh" onPress={fetchRecipes} />
+        <TouchableOpacity>
+        <MaterialCommunityIcons
+          name="refresh"
+          size={24}
+          color="white"
+          onPress={fetchRecipes}
+        />
+        </TouchableOpacity>
       </View>
-      <ScrollView style={{width: '100%'}}>
+      <ScrollView style={{ width: "100%" }}>
         {savedRecipes.map((recipe) => (
           <RecipeContainer key={recipe.id} recipe={recipe} />
         ))}
@@ -176,7 +191,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: 'white',
     zIndex: 1,
-    marginLeft: 25
+    
   },
   recipeContent: {
     backgroundColor: "#f2f2f2",

@@ -40,62 +40,173 @@ const FitnessTracker = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Fitness Tracker</Text>
-        <Image source={require('../../assets/vivup.png')} style={{ width: 65, height: 45, left: 20, top: 3 }} />
+        <Image
+          source={require("../../assets/vivup.png")}
+          style={styles.image}
+        />
       </View>
-
-      <ProgressTracker totalCaloriesBurned={totalCaloriesBurned} calorieResult={calorieResult} caloriesToBurnPercent={caloriesToBurnPercent} handleReset={() => handleReset(
-        setSteps,
-        setCalories,
-        setCaloriesBurned,
-        setCaloriesToBurn,
-        setWorkoutPlannerData)} />
+      {/* Progress Tracker */}
+      <ProgressTracker
+        totalCaloriesBurned={totalCaloriesBurned}
+        calorieResult={calorieResult}
+        caloriesToBurnPercent={caloriesToBurnPercent}
+        handleReset={() =>
+          handleReset(
+            setSteps,
+            setCalories,
+            setCaloriesBurned,
+            setCaloriesToBurn,
+            setWorkoutPlannerData
+          )
+        }
+      />
 
       {/* Calories To Burn */}
-      {!showCaloriesToBurn &&
-        <View style={styles.content}>
+      {!showCaloriesToBurn && (
+        <TouchableOpacity
+          onPress={() =>
+            handleToggleCaloriesToBurn(
+              showCaloriesToBurn,
+              setShowCaloriesToBurn,
+              setShowStepCounter,
+              setShowCalorieTracker
+            )
+          }
+          style={styles.content}
+        >
+          <Text style={styles.title}>Calories to Burn</Text>
           <Text style={styles.score}>{caloriesToBurn}</Text>
-          <TouchableOpacity onPress={() => handleToggleCaloriesToBurn(showCaloriesToBurn, setShowCaloriesToBurn, setShowStepCounter, setShowCalorieTracker)} style={styles.titleContainer}>
-            <Text style={styles.title}>Calories to Burn</Text>
-          </TouchableOpacity>
-        </View>}
-      {showCaloriesToBurn && <CaloriesToBurnTracker onCaloriesToBurnChange={caloriesToBurn => handleCaloriesToBurn(setCaloriesToBurn, caloriesToBurn)} handleToggleCaloriesToBurn={() => handleToggleCaloriesToBurn(showCaloriesToBurn, setShowCaloriesToBurn, setShowStepCounter, setShowCalorieTracker)} />}
-      
+        </TouchableOpacity>
+      )}
+      {showCaloriesToBurn && (
+        <CaloriesToBurnTracker
+          onCaloriesToBurnChange={(caloriesToBurn) =>
+            handleCaloriesToBurn(setCaloriesToBurn, caloriesToBurn)
+          }
+          handleToggleCaloriesToBurn={() =>
+            handleToggleCaloriesToBurn(
+              showCaloriesToBurn,
+              setShowCaloriesToBurn,
+              setShowStepCounter,
+              setShowCalorieTracker
+            )
+          }
+        />
+      )}
 
       {/* Calories Tracker */}
-      {!showCalorieTracker &&
-        <View style={styles.content}>
+      {!showCalorieTracker && (
+        <TouchableOpacity
+          onPress={() =>
+            handleToggleCalorieTracker(
+              showCalorieTracker,
+              setShowCalorieTracker,
+              setShowStepCounter,
+              setShowCalorieBurned
+            )
+          }
+          style={styles.content}
+        >
+          <Text style={styles.title}>Calories Consumed</Text>
           <Text style={styles.score}>{calories}</Text>
-          <TouchableOpacity onPress={() => handleToggleCalorieTracker(showCalorieTracker, setShowCalorieTracker, setShowStepCounter, setShowCalorieBurned)} style={styles.titleContainer}>
-            <Text style={styles.title}>Calories Consumed</Text>
-          </TouchableOpacity>
-        </View>}
-      {showCalorieTracker && <CalorieTracker toggleRecipeGen={() => toggleRecipeGen(showRecipeGen, setShowRecipeGen)} onCaloriesChange={newCalories => handleCalorieChange(calories, setCalories, newCalories)} handleToggleCalorieTracker={() => handleToggleCalorieTracker(showCalorieTracker, setShowCalorieTracker, setShowStepCounter, setShowCalorieBurned)} />}
-      {showRecipeGen && <RecipeGenerator setCalories={setCalories} calories={calories} toggleRecipeGen={() => toggleRecipeGen(showRecipeGen, setShowRecipeGen)}/>}
+        </TouchableOpacity>
+      )}
+      {showCalorieTracker && (
+        <CalorieTracker
+          toggleRecipeGen={() =>
+            toggleRecipeGen(showRecipeGen, setShowRecipeGen)
+          }
+          onCaloriesChange={(newCalories) =>
+            handleCalorieChange(calories, setCalories, newCalories)
+          }
+          handleToggleCalorieTracker={() =>
+            handleToggleCalorieTracker(
+              showCalorieTracker,
+              setShowCalorieTracker,
+              setShowStepCounter,
+              setShowCalorieBurned
+            )
+          }
+        />
+      )}
+      {/* Recipe Generator */}
+      {showRecipeGen && (
+        <RecipeGenerator
+          setCalories={setCalories}
+          calories={calories}
+          toggleRecipeGen={() =>
+            toggleRecipeGen(showRecipeGen, setShowRecipeGen)
+          }
+        />
+      )}
 
       {/* Step Counter */}
-      {!showStepCounter &&
-        <View style={styles.content}>
+      {!showStepCounter && (
+        <TouchableOpacity
+          onPress={() =>
+            handleToggleStepCounter(
+              showStepCounter,
+              setShowStepCounter,
+              setShowCalorieTracker,
+              setShowCalorieBurned
+            )
+          }
+          style={styles.content}
+        >
+          <Text style={styles.title}>Steps Taken</Text>
           <Text style={styles.score}>{steps}</Text>
-          <TouchableOpacity onPress={() => handleToggleStepCounter(showStepCounter, setShowStepCounter, setShowCalorieTracker, setShowCalorieBurned)} style={styles.titleContainer}>
-            <Text style={styles.title}>Steps Taken</Text>
-          </TouchableOpacity>
-        </View>}
-      {showStepCounter && <StepCounterComponent onStepsChange={newSteps => handleStepsChange(steps, setSteps, newSteps)} handleToggleStepCounter={() => handleToggleStepCounter(showStepCounter, setShowStepCounter, setShowCalorieTracker, setShowCalorieBurned)} />}
+        </TouchableOpacity>
+      )}
+      {showStepCounter && (
+        <StepCounterComponent
+          onStepsChange={(newSteps) =>
+            handleStepsChange(steps, setSteps, newSteps)
+          }
+          handleToggleStepCounter={() =>
+            handleToggleStepCounter(
+              showStepCounter,
+              setShowStepCounter,
+              setShowCalorieTracker,
+              setShowCalorieBurned
+            )
+          }
+        />
+      )}
 
       {/* Workout Planner */}
-      {!showCalorieBurned &&
-        <View style={styles.content}>
+      {!showCalorieBurned && (
+        <TouchableOpacity
+          onPress={() =>
+            handleToggleCalorieBurned(
+              showCalorieBurned,
+              setShowCalorieBurned,
+              setShowStepCounter,
+              setShowCalorieTracker
+            )
+          }
+          style={styles.content}
+        >
+          <Text style={styles.title}>Workout Planner</Text>
           <Text style={styles.score}>{caloriesBurned}</Text>
-          <TouchableOpacity onPress={() => handleToggleCalorieBurned(showCalorieBurned, setShowCalorieBurned, setShowStepCounter, setShowCalorieTracker)} style={styles.titleContainer}>
-            <Text style={styles.title}>Workout Planner</Text>
-          </TouchableOpacity>
-        </View>}
-      {showCalorieBurned && <WorkoutPlanner
-        onCaloriesBurned={caloriesBurned => handleCalorieBurned(setCaloriesBurned, caloriesBurned)}
-        workoutPlannerData={workoutPlannerData}
-        setWorkoutPlannerData={setWorkoutPlannerData}
-        handleToggleCalorieBurned={() => handleToggleCalorieBurned(showCalorieBurned, setShowCalorieBurned, setShowStepCounter, setShowCalorieTracker)}
-      />}
+        </TouchableOpacity>
+      )}
+      {showCalorieBurned && (
+        <WorkoutPlanner
+          onCaloriesBurned={(caloriesBurned) =>
+            handleCalorieBurned(setCaloriesBurned, caloriesBurned)
+          }
+          workoutPlannerData={workoutPlannerData}
+          setWorkoutPlannerData={setWorkoutPlannerData}
+          handleToggleCalorieBurned={() =>
+            handleToggleCalorieBurned(
+              showCalorieBurned,
+              setShowCalorieBurned,
+              setShowStepCounter,
+              setShowCalorieTracker
+            )
+          }
+        />
+      )}
     </View>
   );
 };
@@ -103,64 +214,64 @@ const FitnessTracker = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 5
+    backgroundColor: "black",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 5,
   },
   header: {
     paddingHorizontal: 20,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    fontWeight: 'bold',
-    width: '100%'
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    fontWeight: "bold",
+    width: "100%",
   },
   headerText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+  },
+  image: {
+    width: 65,
+    height: 45,
+    left: 20,
+    top: 3,
   },
   content: {
+    flex: 1,
+    backgroundColor: "black",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 5,
     marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 40,
+    paddingHorizontal: 70,
     borderRadius: 25,
     height: 100,
-    width: '100%',
-    overflow: 'hidden',
-    shadowColor: '#000',
+    width: "100%",
+    overflow: "hidden",
+    shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowRadius: 4,
-    backgroundColor: '#161616',
+    backgroundColor: "#161616",
   },
   title: {
     fontSize: 20,
-    // fontFamily: 'roboto',
-    color: 'white',
-  },
-  titleContainer: {
-    marginBottom: 10,
-    alignSelf: 'flex-start',
-    position: 'absolute',
-    top: 40,
-
+    color: "white",
+    marginLeft: -50,
   },
   score: {
-    fontWeight: 'bold',
-    marginLeft: 230,
+    fontWeight: "bold",
     fontSize: 60,
-    color: 'white',
-    zIndex: 1,
+    color: "white",
+    marginRight: -30,
   },
-
-
 });
 
 export default FitnessTracker;

@@ -18,7 +18,8 @@ const AppContainer = () => {
                 backgroundColor: '#161616',
                 borderTopWidth: 0,
                 padding: 7,
-             
+                activeTintColor: 'cyan',
+                inactiveTintColor: 'gray',
               },
           tabBarIcon: ({ color, size, focused }) => {
             let iconName;
@@ -36,13 +37,7 @@ const AppContainer = () => {
             );
           },
         })}
-        tabBarOptions={{
-          tabBarStyle: {
-            backgroundColor: 'black',
-          },
-          activeTintColor: 'cyan',
-          inactiveTintColor: 'gray',
-        }}
+
       >
         <Tab.Screen
           name="Fitness Tracker"
