@@ -27,13 +27,10 @@ const CalorieTracker = ({ onCaloriesChange, handleToggleCalorieTracker, toggleRe
 
     return (
         <View style={styles.container}>
-            <Text style={styles.back} onPress={handleToggleCalorieTracker}>
-                ⇐
-            </Text>
-
+            <Text style={styles.back} onPress={handleToggleCalorieTracker}>⇐</Text>
             <Text style={styles.text}>Calories Consumed</Text>
             <View style={styles.outputContainer}>
-                <Text style={{ fontSize: 100, position: 'relative', left: 30 }}>{calories} <Text style={{ fontSize: 20, position: 'relative', right: 30 }}>Kcal</Text></Text>
+                <Text style={{ fontSize: 100, position: 'relative', left: 30 }}>{calories} <Text style={{ fontSize: 20, position: 'relative', right: 30 }}> Kcal</Text></Text>
             </View>
 
             <TextInput
@@ -51,7 +48,7 @@ const CalorieTracker = ({ onCaloriesChange, handleToggleCalorieTracker, toggleRe
                     <Text style={styles.buttonText}>Reset</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={[styles.button, { width: '85%', marginTop: -10 }]} onPress={handleResetCalories}>
+            <TouchableOpacity style={[styles.button, { width: '85%', marginTop: -20 }]} onPress={handleResetCalories}>
                 <Text style={styles.buttonText} onPress={() => toggleRecipeGen()}>Generate Your Own Recipe!</Text>
             </TouchableOpacity>
         </View>
@@ -104,7 +101,8 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
+        marginTop: -10
     },
     back: {
         position: 'absolute',

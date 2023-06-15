@@ -17,7 +17,7 @@ import {
   handleReset,
   toggleRecipeGen
 } from '../../functions/FitnessTrackerFunctions';
-import RecipeGenerator from './RecipeGenerator';
+import RecipeGenerator from '../../components/RecipeGenerator';
 
 const FitnessTracker = () => {
   const [showStepCounter, setShowStepCounter] = useState(false);
@@ -70,7 +70,7 @@ const FitnessTracker = () => {
           </TouchableOpacity>
         </View>}
       {showCalorieTracker && <CalorieTracker toggleRecipeGen={() => toggleRecipeGen(showRecipeGen, setShowRecipeGen)} onCaloriesChange={newCalories => handleCalorieChange(calories, setCalories, newCalories)} handleToggleCalorieTracker={() => handleToggleCalorieTracker(showCalorieTracker, setShowCalorieTracker, setShowStepCounter, setShowCalorieBurned)} />}
-      {showRecipeGen && <RecipeGenerator />}
+      {showRecipeGen && <RecipeGenerator setCalories={setCalories} calories={calories} toggleRecipeGen={() => toggleRecipeGen(showRecipeGen, setShowRecipeGen)}/>}
 
       {/* Step Counter */}
       {!showStepCounter &&
