@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Touchable } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
+import { getDocs, collection, deleteDoc, doc, orderBy } from "firebase/firestore";
 import { handleExport } from "../../functions/SavedRecipeFunctions";
 import { db } from "../../services/firebase.config";
 
@@ -20,6 +20,8 @@ const SavedRecipes = () => {
         id: doc.id,
         ...doc.data(),
       }));
+
+
       setSavedRecipes(filteredData);
     } catch (error) {
       console.log(error);
@@ -30,7 +32,6 @@ const SavedRecipes = () => {
     const [active, setActive] = useState(false);
 
     const handlePress = () => {
-      console.log(recipe)
       setActive(!active);
     };
 
@@ -47,7 +48,6 @@ const SavedRecipes = () => {
         console.error('Error deleting recipe:', error);
       }
     };
-
 
     return (
       <View style={[styles.recipeContainer, { height: active ? "auto" : 100 }]}>

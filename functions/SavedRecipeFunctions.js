@@ -8,7 +8,7 @@ export const handleExport = (data) => {
               <html>
                 <body>
                   <h1>${data.name}</h1>
-                  <p>${data.description}</p>
+                  <p>  ${data.description}  </p>
                 </body>
               </html>
             `;
@@ -16,9 +16,13 @@ export const handleExport = (data) => {
             // Create an element with the HTML content
             const element = document.createElement('div');
             element.innerHTML = htmlContent;
+
+            const options = {
+                filename: data.name,
+              };
         
             // Convert the element to PDF
-            html2pdf().from(element).save();
+            html2pdf().set(options).from(element).save();
         
             console.log('Data exported as PDF successfully!');
           } catch (error) {
@@ -30,7 +34,7 @@ export const handleExport = (data) => {
 
   };
 
-export const handlemobileExport = (data) => {
+export const handleMobileExport = (data) => {
   const exportData = () => {
     try {
       const formattedData = JSON.stringify(data);
