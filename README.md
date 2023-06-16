@@ -6,6 +6,14 @@
 
 Component that takes in user Input for Macro Nutrient target (Protien, Carbs, Fats, Exlcude) and generates the exact ingredients needed for a desired recipe
 -  Displays API response using Axios to send user data to OpenAI API 
+-  Saves Recipe to Firestore Database
+
+
+▶ Saved Recipes *NEW FEATURE* 
+
+-  Fetches recipe from Database and maps onto SavedRecipes component
+-  Feature to export Recipe PDF to user device
+-  Feature to delete recipe from database
 
 ▶ Progress Tracker 
 Displaying 3 metrics:
