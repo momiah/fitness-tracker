@@ -1,6 +1,6 @@
 # Fitness Tracker
 
-# A simple fitness tracker that tracks the users activity rate for the day. Takes in the following parameters to provide a daily summary:
+A simple fitness tracker that tracks the users activity rate for the day. Takes in the following parameters to provide a daily summary:
 
 - Steps taken
 - Calories Consumed
