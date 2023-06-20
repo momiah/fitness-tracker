@@ -1,11 +1,16 @@
 # Fitness Tracker
 
-# UI enhancement + Features Added
+# A simple fitness tracker that tracks the users activity rate for the day. Takes in the following parameters to provide a daily summary:
+
+- Steps taken
+- Calories Consumed
+- Calories to burn target
+- Activity logger
 
 ▶ Recipe Generator *NEW FEATURE* 
 
 Component that takes in user Input for Macro Nutrient target (Protien, Carbs, Fats, Exlcude) and generates the exact ingredients needed for a desired recipe
--  Displays API response using Axios to send user data to OpenAI API 
+-  Displays API response using Axios by sending user data to OpenAI API 
 -  Saves Recipe to Firestore Database
 
 
@@ -17,7 +22,7 @@ Component that takes in user Input for Macro Nutrient target (Protien, Carbs, Fa
 
 ▶ Progress Tracker 
 Displaying 3 metrics:
-- Chart to measure Calories to Burn target against Calories Burned 
+- D3.js Gauge Chart to measure Calories to Burn target against Calories Burned 
 - Dynamic calorie score, displaying 'Calorie Deficit' if Calories Burned is more than consumed or 'Calorie Surplus' if Calories Burned is less than Calories consumed
 - Total Calories burned for the day, taking in calories burned during workout plus total steps taken
 
