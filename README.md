@@ -7,7 +7,7 @@ A simple fitness tracker that tracks the users activity rate for the day. Takes 
 - Calories to burn target
 - Activity logger
 
-▶ Recipe Generator *NEW FEATURE* 
+▶ AI Recipe Generator *NEW FEATURE* 
 
 Component that takes in user Input for Macro Nutrient target (Protien, Carbs, Fats, Exlcude) and generates the exact ingredients needed for a desired recipe
 -  Displays API response using Axios by sending user data to OpenAI API 
